@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 'use client';
 
 import { useState } from 'react';
@@ -10,6 +8,8 @@ import {
   Button,
   Card,
   CardContent,
+  CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
   Input,
@@ -38,24 +38,12 @@ export default function EmailForm({
   };
 
   return (
-    <Card
-      description="Please enter the email address you want to use to login."
-      footer={
-        <div className="flex flex-col items-start justify-between sm:flex-row sm:items-center">
-          <p className="pb-4 sm:pb-0">
-            We will email you to verify the change.
-          </p>
-          <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting && (
-              <Icons.Spinner className="mr-2 size-4 animate-spin" />
-            )}
-            Update Email
-          </Button>
-        </div>
-      }
-    >
+    <Card>
       <CardHeader>
         <CardTitle>Your Email</CardTitle>
+        <CardDescription>
+          Please enter the email address you want to use to login.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <form id="emailForm" onSubmit={(e) => handleSubmit(e)}>
@@ -70,6 +58,15 @@ export default function EmailForm({
           />
         </form>
       </CardContent>
+      <CardFooter>
+        <p className="pb-4 sm:pb-0">We will email you to verify the change.</p>
+        <Button type="submit" form="emailForm" disabled={isSubmitting}>
+          {isSubmitting && (
+            <Icons.Spinner className="mr-2 size-4 animate-spin" />
+          )}
+          Update Email
+        </Button>
+      </CardFooter>
     </Card>
   );
 }

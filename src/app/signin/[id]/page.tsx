@@ -1,6 +1,5 @@
 import { Metadata } from 'next';
 import { cookies } from 'next/headers';
-import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
@@ -8,12 +7,10 @@ import EmailSignIn from '@/components/forms/AuthForms/email-signin';
 import ForgotPassword from '@/components/forms/AuthForms/forgot-password';
 import OauthSignIn from '@/components/forms/AuthForms/oauth-signin';
 import PasswordSignIn from '@/components/forms/AuthForms/password-signin';
-import Separator from '@/components/forms/AuthForms/separator';
 import SignUp from '@/components/forms/AuthForms/signup';
 import UpdatePassword from '@/components/forms/AuthForms/update-password';
 import * as Icons from '@/components/icons/icons';
 import {
-  buttonVariants,
   Card,
   CardContent,
   CardFooter,
@@ -26,7 +23,6 @@ import {
   getRedirectMethod,
   getViewTypes,
 } from '@/utils/auth-helpers/settings';
-import { cn } from '@/utils/cn';
 import { createClient } from '@/utils/supabase/server';
 
 export const metadata: Metadata = {

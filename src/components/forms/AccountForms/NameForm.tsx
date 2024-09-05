@@ -1,11 +1,19 @@
-// @ts-nocheck
-
 'use client';
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { Button, Card, CardHeader, CardTitle } from '@/components/ui';
+import * as Icons from '@/components/icons/icons';
+import {
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  Input,
+} from '@/components/ui';
 import { handleRequest } from '@/utils/auth-helpers/client';
 import { updateName } from '@/utils/auth-helpers/server';
 
@@ -26,37 +34,36 @@ export default function NameForm({ userName }: { userName: string }) {
   };
 
   return (
-    <Card
-      description="Please enter your full name, or a display name you are comfortable with."
-      footer={
-        <div className="flex flex-col items-start justify-between sm:flex-row sm:items-center">
-          <p className="pb-4 sm:pb-0">64 characters maximum</p>
-          <Button
-            variant="slim"
-            type="submit"
-            form="nameForm"
-            loading={isSubmitting}
-          >
-            Update Name
-          </Button>
-        </div>
-      }
-    >
+    <Card>
       <CardHeader>
         <CardTitle>Your Name</CardTitle>
+        <CardDescription>
+          Please enter your full name, or a display name you are comfortable
+          with.
+        </CardDescription>
       </CardHeader>
-      <div className="mb-4 mt-8 text-xl font-semibold">
+      <CardContent>
         <form id="nameForm" onSubmit={(e) => handleSubmit(e)}>
-          <input
+          <Input
             type="text"
             name="fullName"
-            className="w-1/2 rounded-md bg-zinc-800 p-3"
+            className="w-full rounded-md"
             defaultValue={userName}
             placeholder="Your name"
             maxLength={64}
           />
         </form>
-      </div>
+      </CardContent>
+
+      <CardFooter>
+        <p className="pb-4 sm:pb-0">64 characters maximum</p>
+        <Button type="submit" form="nameForm" disabled={isSubmitting}>
+          {isSubmitting && (
+            <Icons.Spinner className="mr-2 size-4 animate-spin" />
+          )}
+          Update Name
+        </Button>
+      </CardFooter>
     </Card>
   );
 }
