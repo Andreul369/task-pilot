@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 import Stripe from 'stripe';
 
-import type { Tables } from '@/types/types_db';
+import type { Database, Tables, TablesInsert } from '@/types/types_db';
 import { toDateTime } from '@/utils/helpers';
 import { stripe } from '@/utils/stripe/config';
 
@@ -51,6 +51,8 @@ const upsertPriceRecord = async (
     interval: price.recurring?.interval ?? null,
     interval_count: price.recurring?.interval_count ?? null,
     trial_period_days: price.recurring?.trial_period_days ?? TRIAL_PERIOD_DAYS,
+    description: null,
+    metadata: null,
   };
 
   const { error: upsertError } = await supabaseAdmin
