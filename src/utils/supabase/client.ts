@@ -1,6 +1,6 @@
 import { createBrowserClient } from '@supabase/ssr';
 
-import type { Database } from '@/types/database.types';
+import type { Database } from '@/types/types_db';
 
 // Define a function to create a Supabase client for client-side operations
 export const createClient = () =>

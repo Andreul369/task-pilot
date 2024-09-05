@@ -6,7 +6,7 @@ import { User } from '@supabase/supabase-js';
 import cn from 'classnames';
 
 import { Button } from '@/components/ui';
-import type { Tables } from '@/types/database.types';
+import type { Tables } from '@/types/types_db';
 import { getErrorRedirect } from '@/utils/helpers';
 import { getStripe } from '@/utils/stripe/client';
 import { checkoutWithStripe } from '@/utils/stripe/server';

@@ -2,7 +2,7 @@
 
 import Stripe from 'stripe';
 
-import type { Tables } from '@/types/database.types';
+import type { Tables } from '@/types/types_db';
 import {
   calculateTrialEndUnixTimestamp,
   getErrorRedirect,

@@ -1,4 +1,7 @@
+import { Metadata } from 'next';
 import { cookies } from 'next/headers';
+import Image from 'next/image';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import EmailSignIn from '@/components/forms/AuthForms/email-signin';
@@ -9,14 +12,27 @@ import Separator from '@/components/forms/AuthForms/separator';
 import SignUp from '@/components/forms/AuthForms/signup';
 import UpdatePassword from '@/components/forms/AuthForms/update-password';
 import * as Icons from '@/components/icons/icons';
-import { Card } from '@/components/ui';
+import {
+  buttonVariants,
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui';
 import {
   getAuthTypes,
   getDefaultSignInView,
   getRedirectMethod,
   getViewTypes,
 } from '@/utils/auth-helpers/settings';
+import { cn } from '@/utils/cn';
 import { createClient } from '@/utils/supabase/server';
+
+export const metadata: Metadata = {
+  title: 'Authentication',
+  description: 'Authentication forms built using the components.',
+};
 
 export default async function SignIn({
   params,
@@ -56,58 +72,90 @@ export default async function SignIn({
   }
 
   return (
-    <div className="height-screen-helper flex justify-center">
-      <div className="m-auto flex w-80 max-w-lg flex-col justify-between p-3 ">
+    <>
+      <div className="m-auto flex max-w-lg flex-col justify-between p-3 ">
         <div className="flex justify-center pb-12 ">
           <Icons.Logo className="size-16" />
         </div>
-        <Card
-          title={
-            viewProp === 'forgot_password'
-              ? 'Reset Password'
-              : viewProp === 'update_password'
-                ? 'Update Password'
-                : viewProp === 'signup'
-                  ? 'Sign Up'
-                  : 'Sign In'
-          }
-        >
-          {viewProp === 'password_signin' && (
-            <PasswordSignIn
-              allowEmail={allowEmail}
-              redirectMethod={redirectMethod}
-            />
-          )}
-          {viewProp === 'email_signin' && (
-            <EmailSignIn
-              allowPassword={allowPassword}
-              redirectMethod={redirectMethod}
-              disableButton={searchParams.disable_button}
-            />
-          )}
-          {viewProp === 'forgot_password' && (
-            <ForgotPassword
-              allowEmail={allowEmail}
-              redirectMethod={redirectMethod}
-              disableButton={searchParams.disable_button}
-            />
-          )}
-          {viewProp === 'update_password' && (
-            <UpdatePassword redirectMethod={redirectMethod} />
-          )}
-          {viewProp === 'signup' && (
-            <SignUp allowEmail={allowEmail} redirectMethod={redirectMethod} />
-          )}
-          {viewProp !== 'update_password' &&
-            viewProp !== 'signup' &&
-            allowOauth && (
-              <>
-                <Separator text="Third-party sign-in" />
-                <OauthSignIn />
-              </>
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex justify-center">
+              {viewProp === 'forgot_password'
+                ? 'Reset Password'
+                : viewProp === 'update_password'
+                  ? 'Update Password'
+                  : viewProp === 'signup'
+                    ? 'Sign Up'
+                    : 'Sign In'}
+            </CardTitle>
+          </CardHeader>
+
+          <CardContent>
+            {viewProp === 'password_signin' && (
+              <PasswordSignIn
+                allowEmail={allowEmail}
+                redirectMethod={redirectMethod}
+              />
             )}
+            {viewProp === 'email_signin' && (
+              <EmailSignIn
+                allowPassword={allowPassword}
+                redirectMethod={redirectMethod}
+                disableButton={searchParams.disable_button}
+              />
+            )}
+            {viewProp === 'forgot_password' && (
+              <ForgotPassword
+                allowEmail={allowEmail}
+                redirectMethod={redirectMethod}
+                disableButton={searchParams.disable_button}
+              />
+            )}
+            {viewProp === 'update_password' && (
+              <UpdatePassword redirectMethod={redirectMethod} />
+            )}
+            {viewProp === 'signup' && (
+              <SignUp allowEmail={allowEmail} redirectMethod={redirectMethod} />
+            )}
+            {viewProp !== 'update_password' &&
+              viewProp !== 'signup' &&
+              allowOauth && (
+                <div className="mt-6 flex flex-col gap-6">
+                  <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                      <span className="w-full border-t" />
+                    </div>
+                    <div className="relative flex justify-center text-xs uppercase">
+                      <span className="bg-background px-2 text-muted-foreground">
+                        or continue with
+                      </span>
+                    </div>
+                  </div>
+                  <OauthSignIn />
+                </div>
+              )}
+          </CardContent>
+          <CardFooter>
+            <p className="px-8 text-center text-sm text-muted-foreground">
+              By clicking continue, you agree to our{' '}
+              <Link
+                href="/terms"
+                className="underline underline-offset-4 hover:text-primary"
+              >
+                Terms of Service
+              </Link>{' '}
+              and{' '}
+              <Link
+                href="/privacy"
+                className="underline underline-offset-4 hover:text-primary"
+              >
+                Privacy Policy
+              </Link>
+              .
+            </p>
+          </CardFooter>
         </Card>
       </div>
-    </div>
+    </>
   );
 }

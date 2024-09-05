@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 
 import { Button, Card, CardHeader, CardTitle } from '@/components/ui';
-import type { Tables } from '@/types/database.types';
+import type { Tables } from '@/types/types_db';
 import { createStripePortal } from '@/utils/stripe/server';
 
 type Subscription = Tables<'subscriptions'>;
