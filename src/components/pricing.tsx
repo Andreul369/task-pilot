@@ -182,11 +182,10 @@ export default function Pricing({ user, products, subscription }: Props) {
                       </span>
                     </p>
                     <Button
-                      variant="slim"
                       type="button"
-                      loading={priceIdLoading === price.id}
+                      // loading={priceIdLoading === price.id}
                       onClick={() => handleStripeCheckout(price)}
-                      className="mt-8 block w-full rounded-md py-2 text-center text-sm font-semibold text-white hover:bg-zinc-900"
+                      className="mt-8 block w-full rounded-md py-2 text-center text-sm font-semibold"
                     >
                       {subscription ? 'Manage' : 'Subscribe'}
                     </Button>
