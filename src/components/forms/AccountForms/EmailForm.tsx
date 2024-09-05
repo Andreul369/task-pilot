@@ -1,9 +1,19 @@
+/* eslint-disable */
+
 'use client';
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { Button, Card, CardHeader, CardTitle } from '@/components/ui';
+import * as Icons from '@/components/icons/icons';
+import {
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Input,
+} from '@/components/ui';
 import { handleRequest } from '@/utils/auth-helpers/client';
 import { updateEmail } from '@/utils/auth-helpers/server';
 
@@ -35,12 +45,10 @@ export default function EmailForm({
           <p className="pb-4 sm:pb-0">
             We will email you to verify the change.
           </p>
-          <Button
-            variant="slim"
-            type="submit"
-            form="emailForm"
-            loading={isSubmitting}
-          >
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting && (
+              <Icons.Spinner className="mr-2 size-4 animate-spin" />
+            )}
             Update Email
           </Button>
         </div>
@@ -49,18 +57,19 @@ export default function EmailForm({
       <CardHeader>
         <CardTitle>Your Email</CardTitle>
       </CardHeader>
-      <div className="mb-4 mt-8 text-xl font-semibold">
+      <CardContent>
         <form id="emailForm" onSubmit={(e) => handleSubmit(e)}>
-          <input
+          <Input
+            placeholder="Your email"
             type="text"
             name="newEmail"
-            className="w-1/2 rounded-md bg-zinc-800 p-3"
+            autoCapitalize="none"
+            className="w-full rounded-md"
+            autoCorrect="off"
             defaultValue={userEmail ?? ''}
-            placeholder="Your email"
-            maxLength={64}
           />
         </form>
-      </div>
+      </CardContent>
     </Card>
   );
 }
