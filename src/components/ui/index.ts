@@ -1,3 +1,10 @@
+export {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from './accordion';
+
 export { Avatar, AvatarImage, AvatarFallback } from './avatar';
 export { Badge, badgeVariants } from './badge';
 export { Button, buttonVariants } from './button';
@@ -22,6 +29,19 @@ export {
   CarouselPrevious,
   CarouselNext,
 } from './carousel';
+
+export {
+  Dialog,
+  DialogPortal,
+  DialogOverlay,
+  DialogClose,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+} from './dialog';
 
 export {
   DropdownMenu,
@@ -106,3 +126,7 @@ export {
 export { Textarea } from './textarea';
 
 export { Toaster } from './sonner';
+
+export { Toggle, toggleVariants } from './toggle';
+
+export { ToggleGroup, ToggleGroupItem } from './toggle-group';

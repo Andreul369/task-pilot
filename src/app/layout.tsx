@@ -23,7 +23,7 @@ export const metadata = {
     card: 'summary_large_image',
     // title: siteConfig.name,
     // description: siteConfig.description,
-    images: [{ url: 'https://acme-corp-lib.vercel.app/opengraph-image.png' }],
+    // images: [{ url: 'https://agI' }],
     // creator: "",
   },
   // metadataBase: new URL("https://"),

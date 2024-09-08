@@ -1,9 +1,8 @@
 import { cookies } from 'next/headers';
 import Image from 'next/image';
 
-import Pricing from '@/components/pricing';
+import { Board } from '@/components/shad-demo/board';
 import { accounts, mails } from '@/components/shad-demo/data';
-import { Mail } from '@/components/shad-demo/mail';
 import {
   getProducts,
   getSubscription,
@@ -11,7 +10,11 @@ import {
 } from '@/utils/supabase/queries';
 import { createClient } from '@/utils/supabase/server';
 
-export default async function HomePage() {
+export default async function DashboardPage({
+  params,
+}: {
+  params: { boardId: string };
+}) {
   const supabase = createClient();
   const [user, products, subscription] = await Promise.all([
     getUser(supabase),
@@ -27,21 +30,13 @@ export default async function HomePage() {
 
   return (
     <>
-      <div className="hidden flex-col md:flex">
-        <Mail
-          accounts={accounts}
-          mails={mails}
-          defaultLayout={defaultLayout}
-          defaultCollapsed={defaultCollapsed}
-          navCollapsedSize={4}
-        />
-      </div>
-
-      {/* <Pricing
-        user={user}
-        products={products ?? []}
-        subscription={subscription}
-      /> */}
+      <Board
+        accounts={accounts}
+        mails={mails}
+        defaultLayout={defaultLayout}
+        defaultCollapsed={defaultCollapsed}
+        navCollapsedSize={4}
+      />
     </>
   );
 }
