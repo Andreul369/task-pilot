@@ -15,11 +15,11 @@ type OAuthProviders = {
 
 export default function OauthSignIn() {
   const oAuthProviders: OAuthProviders[] = [
-    {
-      name: 'github',
-      displayName: 'GitHub',
-      icon: <Icons.GitHub className="size-5" />,
-    },
+    // {
+    //   name: 'github',
+    //   displayName: 'GitHub',
+    //   icon: <Icons.GitHub className="size-5" />,
+    // },
     {
       name: 'google',
       displayName: 'Google',

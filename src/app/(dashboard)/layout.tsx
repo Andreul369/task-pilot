@@ -18,7 +18,7 @@ export default function DashboardLayout({
 }>) {
   return (
     <div className="flex min-h-screen flex-col overflow-y-auto">
-      <nav className="container z-50 flex h-16 items-center justify-between border-b bg-background">
+      <nav className="container z-50 flex h-14 items-center justify-between border-b bg-background">
         <div className="mr-8 hidden items-center md:flex">
           <Icons.Logo className="mr-2 size-6" />
           <span className="text-lg font-bold tracking-tight">

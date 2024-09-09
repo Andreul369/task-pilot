@@ -1,7 +1,7 @@
 import { Balancer } from 'react-wrap-balancer';
 
 import * as Icons from '@/components/icons/icons';
-import { buttonVariants } from '@/components/ui';
+import { buttonVariants, FlipWords } from '@/components/ui';
 import { cn } from '@/utils/cn';
 import {
   getProducts,
@@ -17,6 +17,8 @@ export default async function HomePage() {
     getProducts(supabase),
     getSubscription(supabase),
   ]);
+
+  const words = ['move forward', 'work faster', 'stay in sync', 'collaborate'];
 
   return (
     <main className="flex min-h-screen w-full flex-col items-center justify-center pt-48">
@@ -36,24 +38,32 @@ export default async function HomePage() {
           className="animate-fade-up bg-gradient-to-br from-foreground to-muted-foreground bg-clip-text text-center text-4xl font-bold tracking-[-0.02em] text-transparent opacity-0 drop-shadow-sm md:text-7xl/[5rem]"
           style={{ animationDelay: '0.20s', animationFillMode: 'forwards' }}
         >
-          <Balancer>Your all-in-one, enterprise ready starting point</Balancer>
+          <Balancer>Task Pilot helps teams</Balancer>
         </h1>
+        <FlipWords
+          words={words}
+          className="bg-gradient-to-br from-foreground to-muted-foreground bg-clip-text text-center text-4xl font-bold tracking-[-0.02em] text-transparent opacity-0 drop-shadow-sm md:text-7xl/[5rem]"
+        />
+
         <p
           className="mt-6 animate-fade-up text-center text-muted-foreground/80 opacity-0 md:text-xl"
           style={{ animationDelay: '0.30s', animationFillMode: 'forwards' }}
         >
           <Balancer>
-            Acme Corp is a Next.js starter kit that includes everything you need
-            to build a modern web application. Mobile application preconfigured,
-            ready to go.
+            Collaborate, manage projects, and reach new productivity peaks. From
+            high rises to the home office, the way your team works is unique -
+            accomplish it all with Dadarello
           </Balancer>
         </p>
         <div
-          className="mx-auto mt-6 flex animate-fade-up items-center justify-center space-x-5 opacity-0"
+          className="mx-auto mt-6 flex animate-fade-up  items-center justify-center space-x-5 opacity-0"
           style={{ animationDelay: '0.40s', animationFillMode: 'forwards' }}
         >
           <a
-            className={cn(buttonVariants({ variant: 'default' }))}
+            className={cn(
+              buttonVariants({ variant: 'default' }),
+              'bg-gradient-to-r from-fuchsia-600 to-pink-600 text-white',
+            )}
             // href={siteConfig.github}
             href="#"
             target="_blank"

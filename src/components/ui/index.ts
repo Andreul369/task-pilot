@@ -61,6 +61,8 @@ export {
   DropdownMenuTrigger,
 } from './dropdown-menu';
 
+export { FlipWords } from './flip-words';
+
 export {
   useFormField,
   Form,
