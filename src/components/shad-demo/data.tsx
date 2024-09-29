@@ -1,36 +1,36 @@
 export const workspaces = [
   {
-    id: 1,
+    id: '1',
     name: 'Workspace #1',
     boards: [
       {
-        id: 1,
+        id: '1',
         name: 'Sales Pipelines',
       },
       {
-        id: 2,
+        id: '2',
         name: 'Dev Pipelines',
       },
       {
-        id: 3,
+        id: '3',
         name: 'Economic Research',
       },
     ],
   },
   {
-    id: 2,
+    id: '2',
     name: 'Workspace #2',
     boards: [
       {
-        id: 1,
+        id: '1',
         name: 'Home Stuff',
       },
       {
-        id: 2,
+        id: '2',
         name: 'Items for vacation',
       },
       {
-        id: 3,
+        id: '3',
         name: 'Personal Journalism',
       },
     ],
@@ -49,6 +49,26 @@ export const user = {
 };
 
 export const mails = [
+  {
+    id: 'de305d54-75b4-431b-adb2-eb6b9e546014',
+    name: 'James Martin',
+    email: 'jamesmartin@example.com',
+    subject: 'Re: Conference Registration',
+    text: "I've completed the registration for the conference next month. The event promises to be a great networking opportunity, and I'm looking forward to attending the various sessions and connecting with industry experts.\n\nI've also attached the conference schedule for your reference.\n\nIf there are any specific topics or sessions you'd like me to explore, please let me know. It's an exciting event, and I'll make the most of it.\n\nBest regards, James",
+    date: '2022-11-30T19:15:00',
+    read: true,
+    labels: ['work', 'conference'],
+  },
+  {
+    id: 'de305d54-75b4-431b-adb2-eb6b9e546014',
+    name: 'James Martin',
+    email: 'jamesmartin@example.com',
+    subject: 'Re: Conference Registration',
+    text: "I've completed the registration for the conference next month. The event promises to be a great networking opportunity, and I'm looking forward to attending the various sessions and connecting with industry experts.\n\nI've also attached the conference schedule for your reference.\n\nIf there are any specific topics or sessions you'd like me to explore, please let me know. It's an exciting event, and I'll make the most of it.\n\nBest regards, James",
+    date: '2022-11-30T19:15:00',
+    read: true,
+    labels: ['work', 'conference'],
+  },
   {
     id: 'de305d54-75b4-431b-adb2-eb6b9e546014',
     name: 'James Martin',

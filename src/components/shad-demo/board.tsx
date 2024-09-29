@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import Link from 'next/link';
 import {
   AlertCircle,
   Archive,
@@ -16,27 +17,36 @@ import {
 
 import * as Icons from '@/components/icons/icons';
 import {
+  Badge,
   Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
   Separator,
   TooltipProvider,
 } from '@/components/ui';
+import { Tables } from '@/types/types_db';
 import { cn } from '@/utils/cn';
+import { ListsServer } from '../experiment/server/lists.server';
+import { UpdateBoardTitleForm } from '../forms/board-title-form';
 import { AccountSwitcher } from './account-switcher';
-import type { Mail } from './data';
 import { Lists } from './lists';
 import { Nav } from './nav';
-import { useMail } from './use-mail';
 
-interface MailProps {
+interface BoardProps {
   accounts: {
     label: string;
     email: string;
     icon: React.ReactNode;
   }[];
-  mails: Mail[];
+  lists: Tables<'lists'>[];
+  boardData: Tables<'boards'>;
   defaultLayout: number[] | undefined;
   defaultCollapsed?: boolean;
   navCollapsedSize: number;
@@ -44,31 +54,34 @@ interface MailProps {
 
 export function Board({
   accounts,
-  mails,
-  defaultLayout = [18, 82],
+  lists,
+  boardData,
+  defaultLayout = [16, 84],
   defaultCollapsed = false,
   navCollapsedSize,
-}: MailProps) {
+}: BoardProps) {
   const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed);
-  const [mail] = useMail();
+
+  console.log(lists);
 
   return (
     <TooltipProvider delayDuration={0}>
       <ResizablePanelGroup
         direction="horizontal"
         onLayout={(sizes: number[]) => {
-          document.cookie = `react-resizable-panels:layout:mail=${JSON.stringify(
+          document.cookie = `react-resizable-panels:layout:board=${JSON.stringify(
             sizes,
           )}`;
         }}
-        className="h-full items-stretch bg-[url(/sign-in-background.jpg)] bg-cover bg-center"
+        className="h-full bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${boardData.image_full_url})` }}
       >
         <ResizablePanel
           defaultSize={defaultLayout[0]}
           collapsedSize={navCollapsedSize}
           collapsible={true}
-          minSize={13}
-          maxSize={18}
+          minSize={9}
+          maxSize={16}
           onCollapse={() => {
             setIsCollapsed(true);
             document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
@@ -96,47 +109,38 @@ export function Board({
             <AccountSwitcher isCollapsed={isCollapsed} accounts={accounts} />
           </div>
           <Separator />
-          <Nav
-            isCollapsed={isCollapsed}
-            links={[
-              {
-                title: 'Inbox',
-                label: '128',
-                icon: Inbox,
-                variant: 'default',
-              },
-              {
-                title: 'Drafts',
-                label: '9',
-                icon: File,
-                variant: 'ghost',
-              },
-              {
-                title: 'Sent',
-                label: '',
-                icon: Send,
-                variant: 'ghost',
-              },
-              {
-                title: 'Junk',
-                label: '23',
-                icon: ArchiveX,
-                variant: 'ghost',
-              },
-              {
-                title: 'Trash',
-                label: '',
-                icon: Trash2,
-                variant: 'ghost',
-              },
-              {
-                title: 'Archive',
-                label: '',
-                icon: Archive,
-                variant: 'ghost',
-              },
-            ]}
-          />
+
+          <Link
+            href={`/workspace/${boardData.workspace_id}`}
+            className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+          >
+            <Icons.ClipboardList className="size-4" />
+            Boards
+          </Link>
+          <Link
+            href={`/workspace/${boardData.workspace_id}/activity`}
+            className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+          >
+            <Icons.Activity className="size-4" />
+            Activity
+            <Badge className="ml-auto flex size-6 shrink-0 items-center justify-center rounded-full">
+              6
+            </Badge>
+          </Link>
+          <Link
+            href={`/workspace/${boardData.workspace_id}/settings`}
+            className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary"
+          >
+            <Icons.Settings className="size-4" />
+            Settings
+          </Link>
+          <Link
+            href={`/workspace/${boardData.workspace_id}/billing`}
+            className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+          >
+            <Icons.CreditCard className="size-4" />
+            Billing
+          </Link>
           <Separator />
           <Nav
             isCollapsed={isCollapsed}
@@ -175,17 +179,41 @@ export function Board({
           />
         </ResizablePanel>
         <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={defaultLayout[1]} minSize={82}>
-          <div className="w-ful flex items-center justify-start gap-4 bg-black/25 px-4 py-2 backdrop-blur-sm">
-            <h1 className="text-xl font-semibold text-white">Board Name</h1>
-            <Button variant="ghost" className="text-white">
-              <Icons.Star className="size-4" />
-            </Button>
-            <Button variant="ghost" className="text-white">
-              <Icons.Users className="size-4" />
-            </Button>
+        <ResizablePanel defaultSize={defaultLayout[1]} minSize={84}>
+          <div className="flex w-full items-center justify-between bg-black/25 backdrop-blur-sm">
+            <div className="flex w-full items-center justify-start gap-4 px-4 py-2">
+              <UpdateBoardTitleForm
+                boardId={boardData.id}
+                boardTitle={boardData.title}
+              />
+
+              <Button variant="ghost" className="text-white">
+                <Icons.Star className="size-4" />
+              </Button>
+              <Button variant="ghost" className="text-white">
+                <Icons.Users className="size-4" />
+              </Button>
+            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="transparent"
+                  className="flex size-8 p-0 data-[state=open]:bg-muted"
+                >
+                  <Icons.DotsHorizontal className="size-4" />
+                  <span className="sr-only">Open menu</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-[160px]">
+                <DropdownMenuItem>Edit</DropdownMenuItem>
+                <DropdownMenuItem>Make a copy</DropdownMenuItem>
+                <DropdownMenuItem>Favorite</DropdownMenuItem>
+                <DropdownMenuSeparator />
+
+                <DropdownMenuItem>Delete</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
-          <Lists items={mails} />
         </ResizablePanel>
       </ResizablePanelGroup>
     </TooltipProvider>

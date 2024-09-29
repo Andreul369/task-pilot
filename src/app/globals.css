@@ -83,6 +83,18 @@
   }
 }
 
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}
+
 .editor-input {
   min-height: 150px;
   resize: none;
@@ -96,16 +108,7 @@
 }
 
 .editor-placeholder {
-  color: #999;
-  overflow: hidden;
-  position: absolute;
-  text-overflow: ellipsis;
-  top: 15px;
-  left: 10px;
-  font-size: 15px;
-  user-select: none;
-  display: inline-block;
-  pointer-events: none;
+  @apply absolute left-3 top-2 overflow-hidden font-normal text-muted-foreground;
 }
 
 .editor-text-code {
@@ -209,32 +212,19 @@
 }
 
 .editor-paragraph {
-  margin: 0;
-  margin-bottom: 8px;
-  position: relative;
-}
-
-.editor-paragraph:last-child {
-  margin-bottom: 0;
+  @apply relative text-base leading-normal;
 }
 
 .editor-heading-h1 {
-  font-size: 24px;
-  color: rgb(5, 5, 5);
-  font-weight: 400;
-  margin: 0;
-  margin-bottom: 12px;
-  padding: 0;
+  @apply text-2xl font-normal;
 }
 
 .editor-heading-h2 {
-  font-size: 15px;
-  color: rgb(101, 103, 107);
-  font-weight: 700;
-  margin: 0;
-  margin-top: 10px;
-  padding: 0;
-  text-transform: uppercase;
+  @apply text-xl font-normal;
+}
+
+.editor-heading-h3 {
+  @apply text-lg font-normal;
 }
 
 .editor-quote {

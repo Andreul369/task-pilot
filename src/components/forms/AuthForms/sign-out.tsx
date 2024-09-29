@@ -14,14 +14,22 @@ export default function SignOut() {
   };
 
   return (
-    <form action={signOut} className="px-0 py-0">
+    <form action={signOut} className="p-0 px-0 py-0">
       <Button
-        variant={'ghost'}
-        className="w-full flex-1 justify-start px-2  text-sm font-[400]"
+        variant="ghost"
+        className="h-5 w-full flex-1 justify-start px-0 text-sm font-normal"
       >
         <Icons.LogOut className="mr-2 size-4" />
         <span>Log out</span>
       </Button>
     </form>
   );
+}
+{
+  /* <form onSubmit={(e) => handleRequest(e, SignOut, router)}>
+        <input type="hidden" name="pathName" value={usePathname()} />
+          <button type="submit" className={s.link}>
+            Sign out
+          </button>
+      </form> */
 }

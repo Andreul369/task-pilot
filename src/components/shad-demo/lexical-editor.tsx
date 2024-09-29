@@ -1,11 +1,18 @@
+import { SetStateAction, useEffect, useState } from 'react';
+import { CodeNode } from '@lexical/code';
+import ListPlugin, { ListItemNode, ListNode } from '@lexical/list';
 import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
+import { HeadingNode, QuoteNode } from '@lexical/rich-text';
+import { EditorState } from 'lexical';
 
 import { cn } from '@/utils/cn';
+import AddCommentPlugin from './lexical-plugins/add-comment-plugin';
 import ToolbarPlugin from './lexical-plugins/toolbar-plugin';
 import TreeViewPlugin from './lexical-plugins/tree-view-plugin';
 
@@ -17,8 +24,6 @@ const theme = {
     h1: 'editor-heading-h1',
     h2: 'editor-heading-h2',
     h3: 'editor-heading-h3',
-    h4: 'editor-heading-h4',
-    h5: 'editor-heading-h5',
   },
   image: 'editor-image',
   link: 'editor-link',
@@ -47,12 +52,12 @@ const theme = {
   },
 };
 
-// // Catch any errors that occur during Lexical updates and log them
-// // or throw them as needed. If you don't throw them, Lexical will
-// // try to recover gracefully without losing user data.
-// function onError(error: any) {
-//   console.error(error);
-// }
+// Catch any errors that occur during Lexical updates and log them
+// or throw them as needed. If you don't throw them, Lexical will
+// try to recover gracefully without losing user data.
+function onError(error: Error) {
+  console.error(error);
+}
 
 interface ILexicalEditor {
   className?: string;
@@ -60,8 +65,8 @@ interface ILexicalEditor {
 
 export function LexicalEditor({ className }: ILexicalEditor) {
   const editorConfig = {
-    namespace: 'React.js Demo',
-    nodes: [],
+    namespace: 'Editor',
+    nodes: [HeadingNode, ListNode, ListItemNode, QuoteNode, CodeNode],
     // Handling of errors during update
     onError(error: Error) {
       throw error;
@@ -70,13 +75,17 @@ export function LexicalEditor({ className }: ILexicalEditor) {
     theme: theme,
   };
 
+  const [editorState, setEditorState] = useState();
+  function onChange(editorState: SetStateAction<undefined>) {
+    setEditorState(editorState);
+    console.log(editorState);
+  }
+
   const placeholder = 'Enter some rich text...';
   return (
     <LexicalComposer initialConfig={editorConfig}>
-      {/* //TODO: why relative? It was like this when copied */}
       <div className={cn('relative bg-muted', className)}>
         <ToolbarPlugin />
-        {/* //TODO: why relative? It was like this when copied */}
         <div className="relative bg-muted">
           <RichTextPlugin
             contentEditable={
@@ -84,7 +93,7 @@ export function LexicalEditor({ className }: ILexicalEditor) {
                 className="min-h-40 px-3 py-2"
                 aria-placeholder={placeholder}
                 placeholder={
-                  <div className="editor-placeholder">{placeholder}</div>
+                  <p className="editor-placeholder">{placeholder}</p>
                 }
               />
             }
@@ -92,9 +101,10 @@ export function LexicalEditor({ className }: ILexicalEditor) {
           />
           <HistoryPlugin />
           <AutoFocusPlugin />
-          {/* <TreeViewPlugin /> */}
         </div>
       </div>
+      <AddCommentPlugin />
+      <TreeViewPlugin />
     </LexicalComposer>
   );
 }

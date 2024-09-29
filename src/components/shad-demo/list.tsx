@@ -1,117 +1,111 @@
 'use client';
 
-import { ComponentProps, useState } from 'react';
-import Image from 'next/image';
-import { formatDistanceToNow } from 'date-fns/formatDistanceToNow';
+import { useEffect, useState } from 'react';
+import { useParams, usePathname } from 'next/navigation';
+import { Draggable, Droppable } from '@hello-pangea/dnd';
 
+import { deleteList, duplicateList } from '@/actions/lists';
 import * as Icons from '@/components/icons/icons';
 import {
-  Badge,
   Button,
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-  Input,
-  ScrollArea,
-  ScrollBar,
-  Textarea,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from '@/components/ui';
-import { cn } from '@/utils/cn';
+import { Tables } from '@/types/types_db';
+import { AddCardForm } from '../forms/add-card-form';
+import { UpdateListTitleForm } from '../forms/list-title-form';
 import { CardDialog } from './card-dialog';
-import { Mail } from './data';
-import { useMail } from './use-mail';
 
-interface MailListProps {
-  list: Mail;
+interface ListProps {
+  list: Tables<'lists'> & { cards: Tables<'cards'>[] };
+  index: number;
 }
 
-const data = [
-  { id: 1, title: 'Title 1', order: 1 },
-  { id: 2, title: 'Title 2', order: 2 },
-  { id: 3, title: 'Title 3', order: 3 },
-  { id: 4, title: 'Title 4', order: 4 },
-  { id: 5, title: 'Title 5', order: 5 },
-];
+export function List({ list, index }: ListProps) {
+  const { boardId } = useParams<{ boardId: string }>();
+  const pathName = usePathname();
+  const [orderedCards, setOrderedCards] = useState(list.cards);
 
-export function List({ list }: MailListProps) {
-  //   const [mail, setMail] = useMail();
-  const [showCardForm, setShowCardForm] = useState(false);
-  const [listcards, setListcards] = useState(data);
-
-  const handleCardSubmit = async () => {
-    setListcards((prevState) => [
-      ...prevState,
-      {
-        id: listcards.length + 1,
-        title: 'title 6',
-        order: listcards.length + 1,
-      },
-    ]);
-  };
+  useEffect(() => {
+    setOrderedCards(list.cards);
+  }, [list]);
 
   return (
-    // 👇 The name of the component used is card (shadcn)
-    <Card
-      className="w-72 self-start bg-card/90"
-      //   onClick={() =>
-      //     setMail({
-      //       ...mail,
-      //       selected: list.id,
-      //     })
-      //   }
-    >
-      <CardHeader className="p-2">
-        <CardTitle className="text-lg">{list.name}</CardTitle>
-      </CardHeader>
-      <CardContent className="flex w-full flex-col gap-2 p-2">
-        {listcards.map((list) => (
-          <CardDialog key={list.id} title={list.title} />
-        ))}
-      </CardContent>
-      <CardFooter className="w-full p-2">
-        {showCardForm ? (
-          <form
-            onSubmit={handleCardSubmit}
-            className="flex w-full flex-col gap-2"
-          >
-            <Textarea
-              name="cardTitle"
-              placeholder="Enter a name for this card..."
-              className="w-full"
-            />
-            <div className="flex items-center justify-start gap-1">
-              <Button type="submit" className="px-3 py-1.5">
-                Add card
-              </Button>
-              <Button variant="ghost" onClick={() => setShowCardForm(false)}>
-                <Icons.Close className="size-5" />
-              </Button>
-            </div>
-          </form>
-        ) : (
-          <Button variant="ghost" onClick={() => setShowCardForm(true)}>
-            <Icons.Plus className="mr-2 size-5" />
-            Add a card
-          </Button>
-        )}
-      </CardFooter>
-    </Card>
+    <Draggable draggableId={list.id} index={index}>
+      {(provided) => (
+        <Card
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          className="w-72 self-start bg-card/90"
+        >
+          <CardHeader className="flex-row items-center justify-between p-2">
+            <CardTitle className="text-base font-normal">
+              <UpdateListTitleForm listId={list.id} listTitle={list.title} />
+            </CardTitle>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="flex size-8 p-0 data-[state=open]:bg-muted"
+                >
+                  <Icons.DotsHorizontal className="size-4" />
+                  <span className="sr-only">Open menu</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-[160px]">
+                <DropdownMenuItem
+                  onClick={async () =>
+                    await duplicateList(list.id, list.title, boardId, pathName)
+                  }
+                >
+                  Copy list
+                </DropdownMenuItem>
+                <DropdownMenuItem>Favorite</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={async () =>
+                    await deleteList(list.id, boardId, pathName)
+                  }
+                >
+                  Delete
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </CardHeader>
+          <Droppable droppableId={list.id} type="card" direction="vertical">
+            {(provided) => (
+              <div ref={provided.innerRef} {...provided.droppableProps}>
+                <CardContent className="flex w-full flex-col gap-2 p-2">
+                  {orderedCards?.map((card, index) => (
+                    <CardDialog
+                      key={card.id}
+                      id={card.id}
+                      title={card.title}
+                      index={index}
+                      cardDescription={card.description}
+                    />
+                  ))}
+                  {provided.placeholder}
+                </CardContent>
+                {/* 👇 add-card-form-container is used for closing form on click
+              outside */}
+                <CardFooter className="add-card-form-container w-full p-2">
+                  <AddCardForm listId={list.id} />
+                </CardFooter>
+              </div>
+            )}
+          </Droppable>
+        </Card>
+      )}
+    </Draggable>
   );
-}
-
-function getBadgeVariantFromLabel(
-  label: string,
-): ComponentProps<typeof Badge>['variant'] {
-  if (['work'].includes(label.toLowerCase())) {
-    return 'default';
-  }
-
-  if (['personal'].includes(label.toLowerCase())) {
-    return 'outline';
-  }
-
-  return 'secondary';
 }

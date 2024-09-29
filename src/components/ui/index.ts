@@ -5,6 +5,20 @@ export {
   AccordionContent,
 } from './accordion';
 
+export {
+  AlertDialog,
+  AlertDialogPortal,
+  AlertDialogOverlay,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from './alert-dialog';
+
 export { Avatar, AvatarImage, AvatarFallback } from './avatar';
 export { Badge, badgeVariants } from './badge';
 export { Button, buttonVariants } from './button';
@@ -29,6 +43,15 @@ export {
   CarouselPrevious,
   CarouselNext,
 } from './carousel';
+
+export {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from './command';
 
 export {
   Dialog,
@@ -78,7 +101,14 @@ export { Input } from './input';
 
 export { Label } from './label';
 
-export { Popover, PopoverTrigger, PopoverContent } from './popover';
+export {
+  Popover,
+  PopoverTrigger,
+  PopoverClose,
+  PopoverContent,
+} from './popover';
+
+export { RadioGroup, RadioGroupItem } from './radio-group';
 
 export {
   ResizablePanelGroup,

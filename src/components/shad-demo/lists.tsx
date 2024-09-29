@@ -1,89 +1,129 @@
 'use client';
 
-import { ComponentProps, useState } from 'react';
-import Image from 'next/image';
-import { formatDistanceToNow } from 'date-fns/formatDistanceToNow';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
+import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 
-import * as Icons from '@/components/icons/icons';
-import {
-  Badge,
-  Button,
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-  ScrollArea,
-  ScrollBar,
-  Textarea,
-} from '@/components/ui';
-import { cn } from '@/utils/cn';
-import { Mail } from './data';
+import { updateCardsOrder } from '@/actions/cards';
+import { updateListsOrder } from '@/actions/lists';
+import { ScrollArea, ScrollBar } from '@/components/ui';
+import { Tables } from '@/types/types_db';
+import { AddListForm } from '../forms/add-list-form';
 import { List } from './list';
-import { useMail } from './use-mail';
 
-interface MailListProps {
-  items: Mail[];
+interface ListsProps {
+  lists: (Tables<'lists'> & { cards: Tables<'cards'>[] })[];
 }
 
-export function Lists({ items }: MailListProps) {
-  const [mail, setMail] = useMail();
+function reorder<T>(list: T[], startIndex: number, endIndex: number) {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+  return result;
+}
 
-  const [showListForm, setShowListForm] = useState(false);
+export function Lists({ lists }: ListsProps) {
+  const [orderedLists, setOrderedLists] = useState(lists);
 
-  const handleCardSubmit = async () => {
-    console.log('something');
-  };
-  return (
-    <ScrollArea className="h-[calc(100vh-104px)]">
-      <div className="flex w-max gap-3 p-4">
-        <>
-          {items.map((item) => (
-            <List key={item.id} list={item} />
-          ))}
-          {showListForm ? (
-            <form
-              onSubmit={handleCardSubmit}
-              className="flex w-72 flex-col gap-2"
-            >
-              <Textarea name="cardTitle" className="w-full" />
-              <div className="flex items-center justify-start gap-1">
-                <Button type="submit" className="px-3 py-1.5">
-                  Add card
-                </Button>
-                <Button variant="ghost" onClick={() => setShowListForm(false)}>
-                  <Icons.Close className="size-5" />
-                </Button>
-              </div>
-            </form>
-          ) : (
-            <Button
-              variant="ghost"
-              className="h-11 w-72 justify-start bg-white/25 backdrop-blur-sm"
-              onClick={() => setShowListForm(true)}
-            >
-              <Icons.Plus className="mr-2 size-5" />
-              Add another list
-            </Button>
-          )}
-        </>
-      </div>
-      <ScrollBar orientation="horizontal" />
-    </ScrollArea>
+  useEffect(() => {
+    setOrderedLists(lists);
+  }, [lists]);
+
+  const onDragEnd = useCallback(
+    async (result: any) => {
+      const { destination, source, type } = result;
+
+      if (!destination) {
+        return;
+      }
+
+      if (
+        destination.droppableId === source.droppableId &&
+        destination.index === source.index
+      ) {
+        return;
+      }
+
+      // on list order change
+      if (type === 'list') {
+        const newOrderedLists = reorder(
+          orderedLists,
+          source.index,
+          destination.index,
+        ).map((item, index) => ({ ...item, order: index }));
+        const listsToUpdate = newOrderedLists.map(
+          ({ id, board_id, order }) => ({
+            id,
+            board_id,
+            order,
+          }),
+        );
+        setOrderedLists(newOrderedLists);
+
+        await updateListsOrder(listsToUpdate);
+      }
+
+      // on card order change
+      if (type === 'card') {
+        const newOrderedLists = [...orderedLists];
+        const sourceList = newOrderedLists.find(
+          (list) => list.id === source.droppableId,
+        );
+        const destinationList = newOrderedLists.find(
+          (list) => list.id === destination.droppableId,
+        );
+
+        if (!destinationList || !sourceList) return;
+
+        // Moving cards within the same list
+        if (destination.droppableId === source.droppableId) {
+          const cards = reorder(
+            sourceList.cards,
+            source.index,
+            destination.index,
+          ).map((card, index) => ({ ...card, order: index }));
+
+          // TODO: UI does not update when changing cards in the same list
+          sourceList.cards = cards;
+          await updateCardsOrder(sourceList.cards);
+        } else {
+          const [movedCard] = sourceList.cards.splice(source.index, 1);
+
+          movedCard.list_id = destinationList.id;
+          destinationList.cards.splice(destination.index, 0, movedCard);
+
+          sourceList.cards.forEach((card, idx) => (card.order = idx));
+          destinationList.cards.forEach((card, idx) => (card.order = idx));
+          await updateCardsOrder([
+            ...sourceList.cards,
+            ...destinationList.cards,
+          ]);
+        }
+        setOrderedLists(newOrderedLists);
+      }
+    },
+    [orderedLists],
   );
-}
 
-function getBadgeVariantFromLabel(
-  label: string,
-): ComponentProps<typeof Badge>['variant'] {
-  if (['work'].includes(label.toLowerCase())) {
-    return 'default';
-  }
-
-  if (['personal'].includes(label.toLowerCase())) {
-    return 'outline';
-  }
-
-  return 'secondary';
+  return (
+    <div className="h-[calc(100vh-112px)]">
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="lists" type="list" direction="horizontal">
+          {(provided) => (
+            <div
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+              className="add-list-form-container flex w-max gap-3 p-4"
+            >
+              {orderedLists?.map((list, index) => (
+                <List key={list.id} list={list} index={index} />
+              ))}
+              {provided.placeholder}
+              <AddListForm />
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+    </div>
+  );
 }
