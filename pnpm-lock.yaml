@@ -37,13 +37,16 @@ importers:
         version: 0.17.1
       '@novu/framework':
         specifier: ^2.1.1
-        version: 2.1.1(@nestjs/common@10.4.4(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.4(@nestjs/common@10.4.4(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)(rxjs@7.8.1))(next@14.2.14(@babel/core@7.24.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(reflect-metadata@0.2.2)(zod@3.23.8)
+        version: 2.1.1(@nestjs/common@10.4.4(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.4(@nestjs/common@10.4.4(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)(rxjs@7.8.1))(next@14.2.14(@babel/core@7.24.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(reflect-metadata@0.2.2)(zod-to-json-schema@3.23.3(zod@3.23.8))(zod@3.23.8)
       '@novu/headless':
         specifier: ^2.0.0
         version: 2.0.0(@nestjs/common@10.4.4(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.4(@nestjs/common@10.4.4(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)
       '@novu/node':
         specifier: ^2.0.1
         version: 2.0.1(@nestjs/common@10.4.4(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.4(@nestjs/common@10.4.4(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)
+      '@novu/react':
+        specifier: ^2.3.1
+        version: 2.3.1(@nestjs/common@10.4.4(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.4(@nestjs/common@10.4.4(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)(rxjs@7.8.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(reflect-metadata@0.2.2)
       '@radix-ui/react-accordion':
         specifier: ^1.2.1
         version: 1.2.1(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -239,6 +242,9 @@ importers:
       zod:
         specifier: ^3.23.8
         version: 3.23.8
+      zod-to-json-schema:
+        specifier: ^3.23.3
+        version: 3.23.3(zod@3.23.8)
     devDependencies:
       '@types/node':
         specifier: ^20.16.10
@@ -689,6 +695,24 @@ packages:
   '@microsoft/tsdoc@0.15.0':
     resolution: {integrity: sha512-HZpPoABogPvjeJOdzCOSJsXeL/SMCBgBZMVC3X3d7YYp2gf31MfxhUoYUNwf1ERPJOnQc0wkFn9trqI6ZEdZuA==}
 
+  '@motionone/animation@10.18.0':
+    resolution: {integrity: sha512-9z2p5GFGCm0gBsZbi8rVMOAJCtw1WqBTIPw3ozk06gDvZInBPIsQcHgYogEJ4yuHJ+akuW8g1SEIOpTOvYs8hw==}
+
+  '@motionone/dom@10.18.0':
+    resolution: {integrity: sha512-bKLP7E0eyO4B2UaHBBN55tnppwRnaE3KFfh3Ps9HhnAkar3Cb69kUCJY9as8LrccVYKgHA+JY5dOQqJLOPhF5A==}
+
+  '@motionone/easing@10.18.0':
+    resolution: {integrity: sha512-VcjByo7XpdLS4o9T8t99JtgxkdMcNWD3yHU/n6CLEz3bkmKDRZyYQ/wmSf6daum8ZXqfUAgFeCZSpJZIMxaCzg==}
+
+  '@motionone/generators@10.18.0':
+    resolution: {integrity: sha512-+qfkC2DtkDj4tHPu+AFKVfR/C30O1vYdvsGYaR13W/1cczPrrcjdvYCj0VLFuRMN+lP1xvpNZHCRNM4fBzn1jg==}
+
+  '@motionone/types@10.17.1':
+    resolution: {integrity: sha512-KaC4kgiODDz8hswCrS0btrVrzyU2CSQKO7Ps90ibBVSQmjkrt2teqta6/sOG59v7+dPnKMAg13jyqtMKV2yJ7A==}
+
+  '@motionone/utils@10.18.0':
+    resolution: {integrity: sha512-3XVF7sgyTSI2KWvTf6uLlBJ5iAgRgmvp3bpuOiQJvInd4nZ19ET8lX5unn30SlmRH7hXbBbH+Gxd0m0klJ3Xtw==}
+
   '@nestjs/common@10.4.4':
     resolution: {integrity: sha512-0j2/zqRw9nvHV1GKTktER8B/hIC/Z8CYFjN/ZqUuvwayCH+jZZBhCR2oRyuvLTXdnlSmtCAg2xvQ0ULqQvzqhA==}
     peerDependencies:
@@ -922,9 +946,21 @@ packages:
     resolution: {integrity: sha512-EOm/Jd/XDdmCROez5mjNzZ4aHuz42GDcaoMg7YPcYuBozd4zd1+qAkUeZR00gYPx1XPBLchctV+nHpGJxtvm8w==}
     engines: {node: '>=10'}
 
+  '@novu/js@2.3.1':
+    resolution: {integrity: sha512-fUUHPNxAp6FzsldvL10vZtNeSfuJjHRTL3It27YpvbHwrXM1SpnNmRgwIMPr487jcThtsPWo4lECrH4mng2uRw==}
+
   '@novu/node@2.0.1':
     resolution: {integrity: sha512-YIVo375oSV0UZfBOvLJr6heMxHf8MiJqcC0a3XAIgMofizBszcl0AS8+Z0ejukeZBomaX8z1q74JMbIMGc4FhA==}
     engines: {node: '>=10'}
+
+  '@novu/react@2.3.1':
+    resolution: {integrity: sha512-//9/Hpr3b9ED33PSvuLKitksJPvLsocecAOAQrGm6VtsVsf9+ebJr1SWXRlYPAVekm5nRkyj217eMB4xkMFMoQ==}
+    peerDependencies:
+      react: '>=17'
+      react-dom: '>=17'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
 
   '@novu/shared@2.1.1':
     resolution: {integrity: sha512-jwwtFezpy7ofTQJ9ibatcUzz163/KHqhwDSYWFEbBc4HNYPONyyBZHZGZAnqaJVH4tnIBS+F+iTl90+zszdkOQ==}
@@ -1862,6 +1898,26 @@ packages:
 
   '@socket.io/component-emitter@3.1.2':
     resolution: {integrity: sha512-9BCxFwvbGg/RsZK9tjXd8s4UcwR0MWeFQ1XEKIQVVvAGJyINdrqKMcTRyLoK8Rse1GjzLV9cwjWV1olXRWEXVA==}
+
+  '@solid-primitives/props@3.1.11':
+    resolution: {integrity: sha512-jZAKWwvDRHjiydIumDgMj68qviIbowQ1ci7nkEAgzgvanNkhKSQV8iPgR2jMk1uv7S2ZqXYHslVQTgJel/TEyg==}
+    peerDependencies:
+      solid-js: ^1.6.12
+
+  '@solid-primitives/refs@1.0.8':
+    resolution: {integrity: sha512-+jIsWG8/nYvhaCoG2Vg6CJOLgTmPKFbaCrNQKWfChalgUf9WrVxWw0CdJb3yX15n5lUcQ0jBo6qYtuVVmBLpBw==}
+    peerDependencies:
+      solid-js: ^1.6.12
+
+  '@solid-primitives/transition-group@1.0.5':
+    resolution: {integrity: sha512-G3FuqvL13kQ55WzWPX2ewiXdZ/1iboiX53195sq7bbkDbXqP6TYKiadwEdsaDogW5rPnPYAym3+xnsNplQJRKQ==}
+    peerDependencies:
+      solid-js: ^1.6.12
+
+  '@solid-primitives/utils@6.2.3':
+    resolution: {integrity: sha512-CqAwKb2T5Vi72+rhebSsqNZ9o67buYRdEJrIFzRXz3U59QqezuuxPsyzTSVCacwS5Pf109VRsgCJQoxKRoECZQ==}
+    peerDependencies:
+      solid-js: ^1.6.12
 
   '@stripe/stripe-js@2.4.0':
     resolution: {integrity: sha512-WFkQx1mbs2b5+7looI9IV1BLa3bIApuN3ehp9FP58xGg7KL9hCHDECgW3BwO9l9L+xBPVAD7Yjn1EhGe6EDTeA==}
@@ -2869,6 +2925,9 @@ packages:
     resolution: {integrity: sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==}
     engines: {node: '>= 0.4'}
 
+  hey-listen@1.0.8:
+    resolution: {integrity: sha512-COpmrF2NOg4TBWUJ5UVyaCU2A88wEMkUPK4hNqyCkqHbxT92BbvfjoSozkAIIm6XhicGlJHhFdullInrdhwU8Q==}
+
   html-to-text@9.0.5:
     resolution: {integrity: sha512-qY60FjREgVZL03vJU6IfMV4GDjGBIoOyvuFdpBDIX9yTlDw0TjxVBQp+P8NvpdIXNJvfWBTNul7fsAQJq2FNpg==}
     engines: {node: '>=14'}
@@ -3287,6 +3346,9 @@ packages:
   minizlib@3.0.1:
     resolution: {integrity: sha512-umcy022ILvb5/3Djuu8LWeqUa8D68JaBzlttKeMWen48SjabqS3iY5w/vzeMzMUNhLDifyhbOwKDSznB1vvrwg==}
     engines: {node: '>= 18'}
+
+  mitt@3.0.1:
+    resolution: {integrity: sha512-vKivATfr97l2/QBCYAkXYDbrIWPM2IIKEl7YPhjCvKlG3kE2gm+uBo6nEXK3M5/Ffh/FLpKExzOQ3JJoJGFKBw==}
 
   mkdirp@3.0.1:
     resolution: {integrity: sha512-+NsyUUAZDmo6YVHzL/stxSu3t9YS1iljliy3BSDrXJ/dkn1KYdmtZODGGjLcc9XLgVVpH4KshHB8XmZgMhaBXg==}
@@ -3872,6 +3934,16 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
+  seroval-plugins@1.1.1:
+    resolution: {integrity: sha512-qNSy1+nUj7hsCOon7AO4wdAIo9P0jrzAMp18XhiOzA6/uO5TKtP7ScozVJ8T293oRIvi5wyCHSM4TrJo/c/GJA==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      seroval: ^1.0
+
+  seroval@1.1.1:
+    resolution: {integrity: sha512-rqEO6FZk8mv7Hyv4UCj3FD3b6Waqft605TLfsCe/BiaylRpyyMC0b+uA5TJKawX3KzMrdi3wsLbCaLplrQmBvQ==}
+    engines: {node: '>=10'}
+
   set-function-length@1.2.2:
     resolution: {integrity: sha512-pgRc4hJ4/sNjWCSS9AmnS40x3bNMDTknHgL5UaMBTMyJnU90EgWh1Rz+MC9eFu4BuN/UwZjKQuY/1v3rM7HMfg==}
     engines: {node: '>= 0.4'}
@@ -3913,6 +3985,22 @@ packages:
   socket.io@4.7.5:
     resolution: {integrity: sha512-DmeAkF6cwM9jSfmp6Dr/5/mfMwb5Z5qRrSXLpo3Fq5SqyU8CMF15jIN4ZhfSwu35ksM1qmHZDQ/DK5XTccSTvA==}
     engines: {node: '>=10.2.0'}
+
+  solid-floating-ui@0.3.1:
+    resolution: {integrity: sha512-o/QmGsWPS2Z3KidAxP0nDvN7alI7Kqy0kU+wd85Fz+au5SYcnYm7I6Fk3M60Za35azsPX0U+5fEtqfOuk6Ao0Q==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      '@floating-ui/dom': ^1.5
+      solid-js: ^1.8
+
+  solid-js@1.9.1:
+    resolution: {integrity: sha512-Gd6QWRFfO2XKKZqVK4YwbhWZkr0jWw1dYHOt+VYebomeyikGP0SuMflf42XcDuU9HAEYDArFJIYsBNjlE7iZsw==}
+
+  solid-motionone@1.0.2:
+    resolution: {integrity: sha512-nMdfTZND5FzZSD5gcaSmjjgF7aldMmk4PHC88rUSSdUcrCP/LlVl0xMoy/qncQihgkqHRW0ywewbpE/+ToEibA==}
+    engines: {node: '>=20', pnpm: '>=9.0.0'}
+    peerDependencies:
+      solid-js: ^1.8.0
 
   sonner@1.5.0:
     resolution: {integrity: sha512-FBjhG/gnnbN6FY0jaNnqZOMmB73R+5IiyYAw8yBj7L54ER7HB3fOSE5OFiQiE2iXWxeXKvg6fIP4LtVppHEdJA==}
@@ -4296,6 +4384,11 @@ packages:
   yocto-queue@0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
+
+  zod-to-json-schema@3.23.3:
+    resolution: {integrity: sha512-TYWChTxKQbRJp5ST22o/Irt9KC5nj7CdBKYB/AosCRdj/wxEMvv4NNaj9XVUHDOIp53ZxArGhnw5HMZziPFjog==}
+    peerDependencies:
+      zod: ^3.23.3
 
   zod@3.23.8:
     resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
@@ -4793,6 +4886,41 @@ snapshots:
 
   '@microsoft/tsdoc@0.15.0': {}
 
+  '@motionone/animation@10.18.0':
+    dependencies:
+      '@motionone/easing': 10.18.0
+      '@motionone/types': 10.17.1
+      '@motionone/utils': 10.18.0
+      tslib: 2.7.0
+
+  '@motionone/dom@10.18.0':
+    dependencies:
+      '@motionone/animation': 10.18.0
+      '@motionone/generators': 10.18.0
+      '@motionone/types': 10.17.1
+      '@motionone/utils': 10.18.0
+      hey-listen: 1.0.8
+      tslib: 2.7.0
+
+  '@motionone/easing@10.18.0':
+    dependencies:
+      '@motionone/utils': 10.18.0
+      tslib: 2.7.0
+
+  '@motionone/generators@10.18.0':
+    dependencies:
+      '@motionone/types': 10.17.1
+      '@motionone/utils': 10.18.0
+      tslib: 2.7.0
+
+  '@motionone/types@10.17.1': {}
+
+  '@motionone/utils@10.18.0':
+    dependencies:
+      '@motionone/types': 10.17.1
+      hey-listen: 1.0.8
+      tslib: 2.7.0
+
   '@nestjs/common@10.4.4(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)':
     dependencies:
       iterare: 1.2.1
@@ -4926,7 +5054,7 @@ snapshots:
       - '@nestjs/core'
       - reflect-metadata
 
-  '@novu/framework@2.1.1(@nestjs/common@10.4.4(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.4(@nestjs/common@10.4.4(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)(rxjs@7.8.1))(next@14.2.14(@babel/core@7.24.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(reflect-metadata@0.2.2)(zod@3.23.8)':
+  '@novu/framework@2.1.1(@nestjs/common@10.4.4(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.4(@nestjs/common@10.4.4(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)(rxjs@7.8.1))(next@14.2.14(@babel/core@7.24.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(reflect-metadata@0.2.2)(zod-to-json-schema@3.23.3(zod@3.23.8))(zod@3.23.8)':
     dependencies:
       '@novu/shared': 2.1.1(@nestjs/common@10.4.4(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.4(@nestjs/common@10.4.4(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)
       ajv: 8.17.1
@@ -4942,6 +5070,7 @@ snapshots:
     optionalDependencies:
       next: 14.2.14(@babel/core@7.24.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       zod: 3.23.8
+      zod-to-json-schema: 3.23.3(zod@3.23.8)
     transitivePeerDependencies:
       - '@fastify/static'
       - '@nestjs/common'
@@ -4955,6 +5084,27 @@ snapshots:
       '@novu/shared': 2.1.1(@nestjs/common@10.4.4(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.4(@nestjs/common@10.4.4(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)
       '@tanstack/query-core': 4.36.1
       socket.io-client: 4.7.2
+    transitivePeerDependencies:
+      - '@fastify/static'
+      - '@nestjs/common'
+      - '@nestjs/core'
+      - bufferutil
+      - reflect-metadata
+      - supports-color
+      - utf-8-validate
+
+  '@novu/js@2.3.1(@nestjs/common@10.4.4(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.4(@nestjs/common@10.4.4(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)':
+    dependencies:
+      '@floating-ui/dom': 1.6.11
+      '@novu/client': 2.0.0(@nestjs/common@10.4.4(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.4(@nestjs/common@10.4.4(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)
+      class-variance-authority: 0.7.0
+      clsx: 2.1.1
+      mitt: 3.0.1
+      socket.io-client: 4.7.2
+      solid-floating-ui: 0.3.1(@floating-ui/dom@1.6.11)(solid-js@1.9.1)
+      solid-js: 1.9.1
+      solid-motionone: 1.0.2(solid-js@1.9.1)
+      tailwind-merge: 2.5.3
     transitivePeerDependencies:
       - '@fastify/static'
       - '@nestjs/common'
@@ -4979,6 +5129,21 @@ snapshots:
       - '@nestjs/core'
       - debug
       - reflect-metadata
+
+  '@novu/react@2.3.1(@nestjs/common@10.4.4(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.4(@nestjs/common@10.4.4(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)(rxjs@7.8.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(reflect-metadata@0.2.2)':
+    dependencies:
+      '@novu/js': 2.3.1(@nestjs/common@10.4.4(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.4(@nestjs/common@10.4.4(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)
+      react: 18.3.1
+    optionalDependencies:
+      react-dom: 18.3.1(react@18.3.1)
+    transitivePeerDependencies:
+      - '@fastify/static'
+      - '@nestjs/common'
+      - '@nestjs/core'
+      - bufferutil
+      - reflect-metadata
+      - supports-color
+      - utf-8-validate
 
   '@novu/shared@2.1.1(@nestjs/common@10.4.4(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.4(@nestjs/common@10.4.4(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)':
     dependencies:
@@ -5949,6 +6114,24 @@ snapshots:
 
   '@socket.io/component-emitter@3.1.2': {}
 
+  '@solid-primitives/props@3.1.11(solid-js@1.9.1)':
+    dependencies:
+      '@solid-primitives/utils': 6.2.3(solid-js@1.9.1)
+      solid-js: 1.9.1
+
+  '@solid-primitives/refs@1.0.8(solid-js@1.9.1)':
+    dependencies:
+      '@solid-primitives/utils': 6.2.3(solid-js@1.9.1)
+      solid-js: 1.9.1
+
+  '@solid-primitives/transition-group@1.0.5(solid-js@1.9.1)':
+    dependencies:
+      solid-js: 1.9.1
+
+  '@solid-primitives/utils@6.2.3(solid-js@1.9.1)':
+    dependencies:
+      solid-js: 1.9.1
+
   '@stripe/stripe-js@2.4.0': {}
 
   '@supabase/auth-js@2.65.0':
@@ -6840,7 +7023,7 @@ snapshots:
       debug: 4.3.7
       enhanced-resolve: 5.17.1
       eslint: 8.57.1
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.8.0(eslint@8.57.1)(typescript@5.6.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@8.8.0(eslint@8.57.1)(typescript@5.6.2))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.31.0)(eslint@8.57.1))(eslint@8.57.1)
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.8.0(eslint@8.57.1)(typescript@5.6.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3)(eslint@8.57.1)
       fast-glob: 3.3.2
       get-tsconfig: 4.8.1
       is-bun-module: 1.2.1
@@ -6853,7 +7036,7 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.8.0(eslint@8.57.1)(typescript@5.6.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@8.8.0(eslint@8.57.1)(typescript@5.6.2))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.31.0)(eslint@8.57.1))(eslint@8.57.1):
+  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.8.0(eslint@8.57.1)(typescript@5.6.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3)(eslint@8.57.1):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
@@ -6875,7 +7058,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.8.0(eslint@8.57.1)(typescript@5.6.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@8.8.0(eslint@8.57.1)(typescript@5.6.2))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.31.0)(eslint@8.57.1))(eslint@8.57.1)
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.8.0(eslint@8.57.1)(typescript@5.6.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3)(eslint@8.57.1)
       hasown: 2.0.2
       is-core-module: 2.15.1
       is-glob: 4.0.3
@@ -7228,6 +7411,8 @@ snapshots:
   hasown@2.0.2:
     dependencies:
       function-bind: 1.1.2
+
+  hey-listen@1.0.8: {}
 
   html-to-text@9.0.5:
     dependencies:
@@ -7605,6 +7790,8 @@ snapshots:
     dependencies:
       minipass: 7.1.2
       rimraf: 5.0.10
+
+  mitt@3.0.1: {}
 
   mkdirp@3.0.1: {}
 
@@ -8153,6 +8340,12 @@ snapshots:
 
   semver@7.6.3: {}
 
+  seroval-plugins@1.1.1(seroval@1.1.1):
+    dependencies:
+      seroval: 1.1.1
+
+  seroval@1.1.1: {}
+
   set-function-length@1.2.2:
     dependencies:
       define-data-property: 1.1.4
@@ -8226,6 +8419,27 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
+
+  solid-floating-ui@0.3.1(@floating-ui/dom@1.6.11)(solid-js@1.9.1):
+    dependencies:
+      '@floating-ui/dom': 1.6.11
+      solid-js: 1.9.1
+
+  solid-js@1.9.1:
+    dependencies:
+      csstype: 3.1.3
+      seroval: 1.1.1
+      seroval-plugins: 1.1.1(seroval@1.1.1)
+
+  solid-motionone@1.0.2(solid-js@1.9.1):
+    dependencies:
+      '@motionone/dom': 10.18.0
+      '@motionone/utils': 10.18.0
+      '@solid-primitives/props': 3.1.11(solid-js@1.9.1)
+      '@solid-primitives/refs': 1.0.8(solid-js@1.9.1)
+      '@solid-primitives/transition-group': 1.0.5(solid-js@1.9.1)
+      csstype: 3.1.3
+      solid-js: 1.9.1
 
   sonner@1.5.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
@@ -8634,5 +8848,9 @@ snapshots:
       lib0: 0.2.98
 
   yocto-queue@0.1.0: {}
+
+  zod-to-json-schema@3.23.3(zod@3.23.8):
+    dependencies:
+      zod: 3.23.8
 
   zod@3.23.8: {}

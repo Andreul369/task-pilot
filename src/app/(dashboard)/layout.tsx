@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Inbox } from '@novu/react';
 import { Bell } from 'lucide-react';
 
 import { getUserWorkspaces } from '@/actions/workspaces';
@@ -10,7 +11,6 @@ import * as Icons from '@/components/icons/icons';
 import SidebarWorkspace from '@/components/nav/sidebar-workspace';
 import SidebarWorkspaceMobile from '@/components/nav/sidebar-workspace-mobile';
 import { UserNav } from '@/components/nav/user-nav';
-import { NotificationCenter } from '@/components/notification-center';
 import { Button, buttonVariants, Input } from '@/components/ui';
 import { WorkspaceSwitcher } from '@/components/workspace-switcher';
 import { createClient } from '@/utils/supabase/server';
@@ -53,7 +53,6 @@ export default async function DashboardLayout({
           </form>
         </div> */}
         <div className="flex items-center gap-4">
-          <NotificationCenter />
           {/* <WorkspaceSwitcher workspaces={workspaces} /> */}
           <UserNav />
         </div>

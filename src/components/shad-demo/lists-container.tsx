@@ -2,6 +2,7 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
+import { Inbox } from '@novu/react';
 
 import { updateCardsOrder } from '@/actions/cards';
 import { updateListsOrder } from '@/actions/lists';
@@ -219,6 +220,10 @@ export function ListsContainer({ lists }: ListsProps) {
 
   return (
     <div className="h-[calc(100vh-112px)]">
+      <Inbox
+        applicationIdentifier="AaIiSkt4rzmX"
+        subscriberId="66fd5530cf609b134323973b"
+      />
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="lists" type="list" direction="horizontal">
           {(provided) => (
