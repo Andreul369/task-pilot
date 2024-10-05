@@ -34,8 +34,8 @@ export const newBoardWorkflow = workflow(
   'new-board-workflow',
   async ({ step, payload }) => {
     await step.inApp(
-      'send-board-notification',
-      async (controls) => {
+      'New Board Notification',
+      () => {
         return {
           subject: 'New Board Created',
           body: `A new board has been created by ${payload.userName}`,
