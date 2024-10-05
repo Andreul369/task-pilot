@@ -47,7 +47,7 @@ export function WorkspaceSwitcher({ workspaces }) {
           <CommandList>
             <CommandEmpty>No workspace found.</CommandEmpty>
             <CommandGroup>
-              {workspaces?.map((workspace) => (
+              {/* {workspaces?.map((workspace) => (
                 <Link key={workspace.id} href={`/workspace/${workspace.id}`}>
                   <CommandItem
                     value={workspace.id}
@@ -65,7 +65,7 @@ export function WorkspaceSwitcher({ workspaces }) {
                     {workspace.name}
                   </CommandItem>
                 </Link>
-              ))}
+              ))} */}
             </CommandGroup>
           </CommandList>
         </Command>

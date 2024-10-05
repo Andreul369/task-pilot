@@ -30,7 +30,6 @@ export function ListsClient({ children, initialData }: ListsClientProps) {
   useEffect(() => {
     setOrderedLists(initialData);
   }, [initialData]);
-  console.log('orderedLists:::', orderedLists);
 
   const onDragEnd = useCallback(
     async (result: any) => {
@@ -84,7 +83,7 @@ export function ListsClient({ children, initialData }: ListsClientProps) {
             sourceList.cards,
             source.index,
             destination.index,
-          ).map((card, index) => ({ ...card, order: index }));
+          ).map((card, index) => ({ card, order: index }));
 
           // TODO: UI does not update when changing cards in the same list
           sourceList.cards = cards;

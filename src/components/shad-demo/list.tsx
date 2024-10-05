@@ -20,6 +20,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui';
 import { Tables } from '@/types/types_db';
+import { createClient } from '@/utils/supabase/client';
 import { AddCardForm } from '../forms/add-card-form';
 import { UpdateListTitleForm } from '../forms/list-title-form';
 import { CardDialog } from './card-dialog';
@@ -30,13 +31,15 @@ interface ListProps {
 }
 
 export function List({ list, index }: ListProps) {
+  const supabase = createClient();
   const { boardId } = useParams<{ boardId: string }>();
   const pathName = usePathname();
   const [orderedCards, setOrderedCards] = useState(list.cards);
 
+  // Sync orderedCards with list.cards when list.cards changes
   useEffect(() => {
     setOrderedCards(list.cards);
-  }, [list]);
+  }, [list.cards]);
 
   return (
     <Draggable draggableId={list.id} index={index}>

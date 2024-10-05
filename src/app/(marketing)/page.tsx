@@ -7,6 +7,7 @@ import {
   getProducts,
   getSubscription,
   getUser,
+  getUserQuery,
 } from '@/utils/supabase/queries';
 import { createClient } from '@/utils/supabase/server';
 
@@ -17,6 +18,8 @@ export default async function HomePage() {
     getProducts(supabase),
     getSubscription(supabase),
   ]);
+
+  // const data = await getUserQuery(supabase, user?.id);
 
   const words = ['move forward', 'work faster', 'stay in sync', 'collaborate'];
 

@@ -36,7 +36,7 @@ import { cn } from '@/utils/cn';
 import { ListsServer } from '../experiment/server/lists.server';
 import { UpdateBoardTitleForm } from '../forms/board-title-form';
 import { AccountSwitcher } from './account-switcher';
-import { Lists } from './lists';
+import { ListsContainer } from './lists-container';
 import { Nav } from './nav';
 
 interface BoardProps {
@@ -61,8 +61,6 @@ export function Board({
   navCollapsedSize,
 }: BoardProps) {
   const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed);
-
-  console.log(lists);
 
   return (
     <TooltipProvider delayDuration={0}>

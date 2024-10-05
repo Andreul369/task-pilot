@@ -12,9 +12,10 @@ export const getBoardListsWithCards = async (boardId: string) => {
 
     const { data, error } = await supabase
       .from('lists')
-      .select('*')
+      .select('*, cards(*)')
       .eq('board_id', boardId)
       .order('order', { ascending: true });
+    // .order('cards.order', { ascending: true });
 
     if (error) throw error;
     return data || [];
@@ -148,19 +149,16 @@ export const deleteList = async (
 
 export const updateListsOrder = async (
   listsToUpdate: { id: string; board_id: string; order: number }[],
-  pathName: string,
 ) => {
   const supabase = createClient();
 
   try {
     // Prepare data for batch update
-    const { error } = await supabase.rpc('update_lists_order', {
+    const { data, error } = await supabase.rpc('update_lists_order', {
       liststoupdate: listsToUpdate,
     });
     if (error) throw error;
   } catch (error) {
     console.error('Error updating list order:', error);
   }
-  revalidatePath(pathName);
-  redirect(pathName);
 };

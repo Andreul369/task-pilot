@@ -1,4 +1,5 @@
 import { getWorkspaceMembers } from '@/actions/workspaces';
+import { InviteTeamMembersForm } from '@/components/forms/invite-team-members-form';
 import * as Icons from '@/components/icons/icons';
 import {
   AlertDialog,
@@ -36,13 +37,21 @@ import {
   PopoverTrigger,
 } from '@/components/ui';
 import { getInitials } from '@/utils/helpers';
+import { createClient } from '@/utils/supabase/server';
 
 export default async function WorkspaceIdPage({
   params,
 }: {
   params: { workspaceId: string };
 }) {
-  const workspaceMembers = await getWorkspaceMembers(params.workspaceId);
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const userId = user?.id;
+  const workspaceId = params.workspaceId;
+  const workspaceMembers = await getWorkspaceMembers(workspaceId);
 
   return (
     <div className="flex flex-1 flex-col">
@@ -56,15 +65,8 @@ export default async function WorkspaceIdPage({
         <DialogTrigger asChild>
           <Button variant="outline">Invite new member</Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Create a new invitation</DialogTitle>
-            <DialogDescription>
-              Invitation links can be given to anyone to join your team
-            </DialogDescription>
-          </DialogHeader>
-          <NewInvitationForm accountId={accountId} />
-        </DialogContent>
+
+        <InviteTeamMembersForm userId={userId} workspaceId={workspaceId} />
       </Dialog>
 
       <div className="flex flex-1 flex-col gap-12 p-4 lg:gap-6 lg:p-6">

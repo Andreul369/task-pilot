@@ -83,9 +83,13 @@ export const updateCardsOrder = async (
 
   try {
     // Prepare data for batch update
-    const { error } = await supabase.rpc('update_cards_order', {
-      cardstoupdate: cardsToUpdate,
-    });
+    const { data, error } = await supabase
+      .rpc('update_cards_order', {
+        cardstoupdate: cardsToUpdate,
+      })
+      .select();
+
+    return data;
     if (error) console.log(error);
   } catch (error) {
     console.error('Error updating list order:', error);

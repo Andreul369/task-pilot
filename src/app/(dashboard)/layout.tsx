@@ -10,6 +10,7 @@ import * as Icons from '@/components/icons/icons';
 import SidebarWorkspace from '@/components/nav/sidebar-workspace';
 import SidebarWorkspaceMobile from '@/components/nav/sidebar-workspace-mobile';
 import { UserNav } from '@/components/nav/user-nav';
+import { NotificationCenter } from '@/components/notification-center';
 import { Button, buttonVariants, Input } from '@/components/ui';
 import { WorkspaceSwitcher } from '@/components/workspace-switcher';
 import { createClient } from '@/utils/supabase/server';
@@ -26,7 +27,7 @@ export default async function DashboardLayout({
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  const workspaces = await getUserWorkspaces(user.id);
+  const workspaces = await getUserWorkspaces(user?.id);
 
   return (
     <div className="flex min-h-screen flex-col overflow-y-auto">
@@ -37,7 +38,7 @@ export default async function DashboardLayout({
             {siteConfig.name}
           </span>
         </div>
-        <SidebarWorkspaceMobile />
+        {/* <SidebarWorkspaceMobile /> */}
 
         {/* <Link href="/search" className="block md:hidden">
           <Icons.Search className="size-5 text-muted-foreground" />
@@ -52,11 +53,8 @@ export default async function DashboardLayout({
           </form>
         </div> */}
         <div className="flex items-center gap-4">
-          <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
-            <Bell className="size-4" />
-            <span className="sr-only">Toggle notifications</span>
-          </Button>
-          <WorkspaceSwitcher workspaces={workspaces} />
+          <NotificationCenter />
+          {/* <WorkspaceSwitcher workspaces={workspaces} /> */}
           <UserNav />
         </div>
       </nav>

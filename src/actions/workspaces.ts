@@ -73,8 +73,10 @@ export const getWorkspaceMembers = async (workspaceId: string) => {
 
     const { data, error } = await supabase
       .from('workspace_members')
-      .select('*, user:member_id (*)')
-      .eq('workspace_id', workspaceId);
+      .select('*, user:users(*)')
+      .eq('workspace_id', workspaceId)
+      .order('role', { ascending: true });
+    // .order('user.full_name', { ascending: true });
 
     if (error) throw error;
     return data || [];

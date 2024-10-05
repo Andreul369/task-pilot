@@ -27,7 +27,7 @@ const SidebarWorkspace = ({ workspaces }) => {
         <div className="flex-1">
           <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
             <Accordion type="multiple" className="w-full">
-              {workspaces.map((workspace) => (
+              {/* {workspaces?.map((workspace) => (
                 <AccordionItem key={workspace.id} value={`${workspace.id}`}>
                   <AccordionTrigger>
                     <div className="flex items-center justify-start gap-3 text-base font-semibold">
@@ -84,7 +84,7 @@ const SidebarWorkspace = ({ workspaces }) => {
                     </Card>
                   </AccordionContent>
                 </AccordionItem>
-              ))}
+              ))} */}
             </Accordion>
           </nav>
         </div>

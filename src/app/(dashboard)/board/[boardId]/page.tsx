@@ -5,6 +5,7 @@ import { getBoardListsWithCards } from '@/actions/lists';
 import { ListsServer } from '@/components/experiment/server/lists.server';
 import { Board } from '@/components/shad-demo/board';
 import { accounts } from '@/components/shad-demo/data';
+import { ListsContainer } from '@/components/shad-demo/lists-container';
 import { createClient } from '@/utils/supabase/server';
 
 export default async function DashboardPage({
@@ -27,18 +28,17 @@ export default async function DashboardPage({
     .single();
 
   const lists = await getBoardListsWithCards(boardData?.id);
-
   // TODO: check if this is correct, or should it be error.code === '400' ?
   if (error) return notFound();
   return (
-    <Board
-      accounts={accounts}
-      boardData={boardData}
-      lists={lists}
-      defaultLayout={defaultLayout}
-      defaultCollapsed={defaultCollapsed}
-      navCollapsedSize={4}
-    />
-    // <ListsServer boardId={boardData.id} />
+    // <Board
+    //   accounts={accounts}
+    //   boardData={boardData}
+    //   lists={lists}
+    //   defaultLayout={defaultLayout}
+    //   defaultCollapsed={defaultCollapsed}
+    //   navCollapsedSize={4}
+    // />
+    <ListsContainer lists={lists} />
   );
 }

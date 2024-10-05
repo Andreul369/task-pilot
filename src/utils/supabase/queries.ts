@@ -1,12 +1,23 @@
-import { SupabaseClient } from '@supabase/supabase-js';
 import { cache } from 'react';
+import { SupabaseClient } from '@supabase/supabase-js';
 
 export const getUser = cache(async (supabase: SupabaseClient) => {
   const {
-    data: { user }
+    data: { user },
   } = await supabase.auth.getUser();
   return user;
 });
+
+export async function getUserQuery(supabase: SupabaseClient, userId: string) {
+  //TODO: in midday repo nu era const data =. era doar return supabase... oare de ce?
+  const data = supabase
+    .from('users')
+    .select(`*, workspace_members(workspace_id)`)
+    .eq('id', userId)
+    .single()
+    .throwOnError();
+  return data;
+}
 
 export const getSubscription = cache(async (supabase: SupabaseClient) => {
   const { data: subscription, error } = await supabase
