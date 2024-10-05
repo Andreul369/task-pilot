@@ -29,3 +29,30 @@ export const testWorkflow = workflow(
     }),
   },
 );
+
+export const newBoardWorkflow = workflow(
+  'new-board-workflow',
+  async ({ step, payload }) => {
+    await step.inApp(
+      'send-board-notification',
+      async (controls) => {
+        return {
+          subject: 'New Board Created',
+          body: `A new board has been created by ${payload.userName}`,
+        };
+      },
+      {
+        controlSchema: z.object({
+          subject: z
+            .string()
+            .default('A Successful Test on Novu from {{userName}}'),
+        }),
+      },
+    );
+  },
+  {
+    payloadSchema: z.object({
+      userName: z.string().default('John Doe'),
+    }),
+  },
+);
