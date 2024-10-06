@@ -2,7 +2,7 @@ import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 
 import { getBoardListsWithCards } from '@/actions/lists';
-import { ListsServer } from '@/components/experiment/server/lists.server';
+import { BoardServer } from '@/components/experiment/server/board.server';
 import { Board } from '@/components/shad-demo/board';
 import { accounts } from '@/components/shad-demo/data';
 import { ListsContainer } from '@/components/shad-demo/lists-container';
@@ -39,6 +39,6 @@ export default async function DashboardPage({
     //   defaultCollapsed={defaultCollapsed}
     //   navCollapsedSize={4}
     // />
-    <ListsContainer lists={lists} />
+    <BoardServer boardId={boardData.id} />
   );
 }

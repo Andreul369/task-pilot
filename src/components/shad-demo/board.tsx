@@ -33,7 +33,7 @@ import {
 } from '@/components/ui';
 import { Tables } from '@/types/types_db';
 import { cn } from '@/utils/cn';
-import { ListsServer } from '../experiment/server/lists.server';
+import { ListsServer } from '../experiment/server/board.server';
 import { UpdateBoardTitleForm } from '../forms/board-title-form';
 import { AccountSwitcher } from './account-switcher';
 import { ListsContainer } from './lists-container';
