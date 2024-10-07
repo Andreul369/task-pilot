@@ -11,13 +11,6 @@ import {
 import { createClient } from '@/utils/supabase/server';
 
 export default async function HomePage() {
-  const supabase = createClient();
-  const [user, products, subscription] = await Promise.all([
-    getUser(supabase),
-    getProducts(supabase),
-    getSubscription(supabase),
-  ]);
-
   const words = ['move forward', 'work faster', 'stay in sync', 'collaborate'];
 
   return (

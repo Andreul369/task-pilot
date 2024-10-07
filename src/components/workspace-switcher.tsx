@@ -65,7 +65,7 @@ export function WorkspaceSwitcher({ workspaces }: WorkspaceSwitcherProps) {
                       router.push(`/workspace/${workspace.id}`);
                     }}
                   >
-                    {activeWorkspace.id === workspace.id ? (
+                    {activeWorkspace?.id === workspace.id ? (
                       <Check className="mr-2 size-4" />
                     ) : (
                       <Castle className="mr-2 size-4" />
