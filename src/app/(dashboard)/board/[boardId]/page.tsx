@@ -2,8 +2,8 @@ import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 
 import { getBoardListsWithCards } from '@/actions/lists';
-import { BoardServer } from '@/components/experiment/server/board.server';
-import { Board } from '@/components/shad-demo/board';
+import { Board } from '@/components/board/board';
+import { BoardServer } from '@/components/board/experiment/server/board.server';
 import { ListsContainer } from '@/components/shad-demo/lists-container';
 import { createClient } from '@/utils/supabase/server';
 

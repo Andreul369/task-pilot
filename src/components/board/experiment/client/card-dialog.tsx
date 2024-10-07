@@ -20,7 +20,7 @@ import {
   DialogTrigger,
 } from '@/components/ui';
 import { cn } from '@/utils/cn';
-import { LexicalEditor } from '../../shad-demo/lexical-editor';
+import { LexicalEditor } from '../../../lexical/lexical-editor';
 
 interface MailListProps {
   title: string;

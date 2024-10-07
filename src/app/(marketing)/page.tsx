@@ -3,12 +3,6 @@ import { Balancer } from 'react-wrap-balancer';
 import * as Icons from '@/components/icons/icons';
 import { buttonVariants, FlipWords } from '@/components/ui';
 import { cn } from '@/utils/cn';
-import {
-  getProducts,
-  getSubscription,
-  getUser,
-} from '@/utils/supabase/queries';
-import { createClient } from '@/utils/supabase/server';
 
 export default async function HomePage() {
   const words = ['move forward', 'work faster', 'stay in sync', 'collaborate'];

@@ -33,11 +33,11 @@ import {
 } from '@/components/ui';
 import { Tables } from '@/types/types_db';
 import { cn } from '@/utils/cn';
-import { ListsServer } from '../experiment/server/board.server';
 import { UpdateBoardTitleForm } from '../forms/board-title-form';
-import { AccountSwitcher } from './account-switcher';
+import { AccountSwitcher } from '../shad-demo/account-switcher';
+import { Nav } from '../shad-demo/nav';
+import { ListsServer } from './experiment/server/board.server';
 import { ListsContainer } from './lists-container';
-import { Nav } from './nav';
 
 interface BoardProps {
   accounts: {

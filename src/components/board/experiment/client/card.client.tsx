@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Draggable } from '@hello-pangea/dnd';
 
 import * as Icons from '@/components/icons/icons';
-import { LexicalEditor } from '@/components/shad-demo/lexical-editor';
+import { LexicalEditor } from '@/components/lexical/lexical-editor';
 import {
   Avatar,
   AvatarFallback,
