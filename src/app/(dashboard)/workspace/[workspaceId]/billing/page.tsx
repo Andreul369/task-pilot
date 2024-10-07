@@ -1,7 +1,6 @@
 import * as Icons from '@/components/icons/icons';
 import SidebarWorkspace from '@/components/nav/sidebar-workspace';
 import Pricing from '@/components/pricing';
-import { workspaces } from '@/components/shad-demo/data';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui';
 import {
   getProducts,

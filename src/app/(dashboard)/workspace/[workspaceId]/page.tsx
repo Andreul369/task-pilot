@@ -4,8 +4,6 @@ import { getWorkspaceBoards } from '@/actions/boards';
 import { getUserWorkspaces } from '@/actions/workspaces';
 import { AddBoardForm } from '@/components/forms/add-board-form';
 import * as Icons from '@/components/icons/icons';
-import SidebarWorkspace from '@/components/nav/sidebar-workspace';
-import Pricing from '@/components/pricing';
 import {
   Card,
   CardDescription,
@@ -15,7 +13,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui';
-import { getProducts, getSubscription } from '@/utils/supabase/queries';
 import { createClient } from '@/utils/supabase/server';
 
 export default async function WorkspaceIdPage({
@@ -29,6 +26,14 @@ export default async function WorkspaceIdPage({
     data: { user },
   } = await supabase.auth.getUser();
 
+  const {
+    data: { name: workspaceName },
+  } = await supabase
+    .from('workspaces')
+    .select('name')
+    .eq('id', params.workspaceId)
+    .single();
+
   const workspaces = await getUserWorkspaces(user.id);
   const workspaceBoards = await getWorkspaceBoards(params.workspaceId);
   return (
@@ -38,7 +43,7 @@ export default async function WorkspaceIdPage({
           <Icons.Castle className="size-10" />
           <div className="flex flex-col">
             <h1 className="text-lg font-semibold md:text-xl ">
-              Workspace name
+              {workspaceName}
             </h1>
             <div className="flex items-center text-xs text-muted-foreground">
               <Icons.CreditCard className="mr-1 size-3" />
@@ -73,14 +78,11 @@ export default async function WorkspaceIdPage({
           </div> */}
           <div className="flex flex-col gap-1">
             <h3 className="text-2xl font-bold tracking-tight">Your boards</h3>
-            <p className="text-sm text-muted-foreground">
-              You can start selling as soon as you add a product.
-            </p>
-            <div className="row-wrap flex gap-4">
+            <div className="row-wrap flex flex-col gap-4">
               {workspaceBoards?.map((board) => (
                 <Link key={board.id} href={`/board/${board.id}`}>
                   <Card
-                    className="h-28 w-56 cursor-pointer bg-cover bg-center"
+                    className="h-28 w-full cursor-pointer bg-cover bg-center md:w-56"
                     style={{ backgroundImage: `url(${board.image_thumb_url})` }}
                   >
                     <div className="group relative flex h-full w-full flex-col justify-between p-3">
@@ -88,7 +90,6 @@ export default async function WorkspaceIdPage({
                       <h4 className="z-10 text-lg font-semibold">
                         {board.title}
                       </h4>
-                      {/* //TODO: Add to favorites */}
                       <Icons.Star className="z-10 hidden size-4 self-end group-hover:block" />
                     </div>
                   </Card>
@@ -96,12 +97,14 @@ export default async function WorkspaceIdPage({
               ))}
               <Popover>
                 <PopoverTrigger asChild>
-                  <Card className="h-28 w-56 bg-muted/40">
+                  <Card className="h-28 w-full bg-muted/40 md:w-56">
                     <CardHeader className="p-3">
-                      <CardTitle className="text-lg">
+                      <CardTitle className="text-center text-lg">
                         Create new board
                       </CardTitle>
-                      <CardDescription>7 remaining</CardDescription>
+                      <CardDescription className="text-center">
+                        7 remaining
+                      </CardDescription>
                     </CardHeader>
                   </Card>
                 </PopoverTrigger>

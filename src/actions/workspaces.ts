@@ -2,6 +2,7 @@
 
 import { redirect } from 'next/navigation';
 
+import { Tables } from '@/types/types_db';
 import { createClient } from '@/utils/supabase/server';
 
 export const getUserWorkspaces = async (userId: string) => {
@@ -9,15 +10,17 @@ export const getUserWorkspaces = async (userId: string) => {
     const supabase = createClient();
 
     const { data, error } = await supabase.rpc('get_user_workspaces', {
-      user_id: userId,
+      userid: userId, // Ensure the key matches the function parameter
     });
 
     if (error) throw error;
-    return data || [];
+    return data as Tables<'workspaces'>[];
   } catch (error) {
-    return error instanceof Error
-      ? { error: error.message }
-      : { error: 'Error from getUserWorkspaces.' };
+    console.log(error);
+    // TODO: Handle error because returnning a string will mess up the TS props, becuase this way they will also expect a string
+    // return error instanceof Error
+    //   ? { error: error.message }
+    //   : { error: 'Error from getUserWorkspaces.' };
   }
 };
 

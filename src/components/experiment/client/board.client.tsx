@@ -9,7 +9,6 @@ import { updateListsOrder } from '@/actions/lists';
 import { AddListForm } from '@/components/forms/add-list-form';
 import { Tables } from '@/types/types_db';
 import { createClient } from '@/utils/supabase/client';
-import { ListServer } from '../server/list.server';
 import { ListClient } from './list.client';
 
 interface ListsClientProps {
@@ -229,7 +228,7 @@ export function BoardClient({ initialData }: ListsClientProps) {
             className="add-list-form-container flex w-max gap-3 p-4"
           >
             {orderedLists.map((list, index) => (
-              <ListServer key={list.id} initialData={list} index={index} />
+              <ListClient key={list.id} initialData={list} index={index} />
             ))}
             {provided.placeholder}
             <AddListForm />

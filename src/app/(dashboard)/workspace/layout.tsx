@@ -31,7 +31,7 @@ export default async function WorkspaceLayout({
   return (
     <>
       {/* <SidebarWorkspace workspaces={workspaces} /> */}
-      <div className="flex min-h-screen w-full">{children}</div>
+      <div className="flex w-full">{children}</div>
     </>
   );
 }

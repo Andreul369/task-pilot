@@ -21,9 +21,9 @@ import {
 } from '@/components/ui';
 import { Tables } from '@/types/types_db';
 import { createClient } from '@/utils/supabase/client';
+import { CardDialog } from '../experiment/client/card-dialog';
 import { AddCardForm } from '../forms/add-card-form';
 import { UpdateListTitleForm } from '../forms/list-title-form';
-import { CardDialog } from './card-dialog';
 
 interface ListProps {
   list: Tables<'lists'> & { cards: Tables<'cards'>[] };

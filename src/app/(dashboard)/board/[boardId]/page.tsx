@@ -4,7 +4,6 @@ import { notFound } from 'next/navigation';
 import { getBoardListsWithCards } from '@/actions/lists';
 import { BoardServer } from '@/components/experiment/server/board.server';
 import { Board } from '@/components/shad-demo/board';
-import { accounts } from '@/components/shad-demo/data';
 import { ListsContainer } from '@/components/shad-demo/lists-container';
 import { createClient } from '@/utils/supabase/server';
 
