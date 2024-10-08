@@ -2,6 +2,7 @@ import Link from 'next/link';
 
 import { getUserWorkspaces } from '@/actions/workspaces';
 import * as Icons from '@/components/icons/icons';
+import { NotificationCenter } from '@/components/nav/notification-center';
 import SidebarWorkspaceMobile from '@/components/nav/sidebar-workspace-mobile';
 import { UserNav } from '@/components/nav/user-nav';
 import { Input } from '@/components/ui';
@@ -46,6 +47,8 @@ export default async function DashboardLayout({
         </div>
         <div className="flex items-center gap-4">
           <WorkspaceSwitcher workspaces={workspaces} />
+
+          <NotificationCenter />
           <UserNav />
         </div>
       </nav>

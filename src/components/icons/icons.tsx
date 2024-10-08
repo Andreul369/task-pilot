@@ -60,6 +60,7 @@ export const MoreVertical = Lucide.MoreVertical;
 export const Organization = Lucide.Building;
 export const Package = Lucide.Package;
 export const Package2 = Lucide.Package2;
+export const PackageOpen = Lucide.PackageOpen;
 export const Page = Lucide.File;
 export const PanelLeft = Lucide.PanelLeft;
 export const Phone = Lucide.Phone;

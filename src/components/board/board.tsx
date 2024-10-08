@@ -5,13 +5,8 @@ import Link from 'next/link';
 import {
   AlertCircle,
   Archive,
-  ArchiveX,
-  File,
-  Inbox,
   MessagesSquare,
-  Send,
   ShoppingCart,
-  Trash2,
   Users2,
 } from 'lucide-react';
 
@@ -23,7 +18,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
   ResizableHandle,
   ResizablePanel,
@@ -33,11 +27,9 @@ import {
 } from '@/components/ui';
 import { Tables } from '@/types/types_db';
 import { cn } from '@/utils/cn';
+import { AccountSwitcher } from '../account-switcher';
 import { UpdateBoardTitleForm } from '../forms/board-title-form';
-import { AccountSwitcher } from '../shad-demo/account-switcher';
-import { Nav } from '../shad-demo/nav';
-import { ListsServer } from './experiment/server/board.server';
-import { ListsContainer } from './lists-container';
+import { Nav } from '../nav/nav';
 
 interface BoardProps {
   accounts: {

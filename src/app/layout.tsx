@@ -3,6 +3,8 @@ import { GeistSans } from 'geist/font/sans';
 
 import './globals.css';
 
+import { NovuProvider } from '@novu/react/hooks';
+
 import { TailwindIndicator } from '@/components/tailwind-indicator';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui';
