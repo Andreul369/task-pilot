@@ -14,7 +14,7 @@ export const getWorkspaceBoards = async (workspaceId: string) => {
       .eq('workspace_id', workspaceId);
 
     if (error) throw error;
-    return data || [];
+    return data;
   } catch (error) {
     return error instanceof Error
       ? { error: error.message }

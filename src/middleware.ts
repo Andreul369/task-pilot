@@ -8,6 +8,21 @@ export async function middleware(request: NextRequest) {
   const {
     data: { session },
   } = await supabase.auth.getSession();
+
+  // 👇 .pathname is located here
+  const nextUrl = request.nextUrl;
+
+  // Allow access to the homepage without session
+  if (nextUrl.pathname === '/') {
+    return NextResponse.next();
+  }
+
+  if (!session) {
+    const url = new URL('/login', request.url);
+    return NextResponse.redirect(url);
+  }
+
+  return NextResponse.next();
 }
 
 export const config = {

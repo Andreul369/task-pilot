@@ -26,13 +26,13 @@ export default async function WorkspaceIdPage({
     data: { user },
   } = await supabase.auth.getUser();
 
-  const {
-    data: { name: workspaceName },
-  } = await supabase
+  const { data } = await supabase
     .from('workspaces')
     .select('name')
     .eq('id', params.workspaceId)
     .single();
+
+  const workspaceName = data?.name;
 
   const workspaces = await getUserWorkspaces(user.id);
   const workspaceBoards = await getWorkspaceBoards(params.workspaceId);
