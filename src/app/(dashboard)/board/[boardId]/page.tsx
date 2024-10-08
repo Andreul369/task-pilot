@@ -1,10 +1,8 @@
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 
-import { getBoardListsWithCards } from '@/actions/lists';
 import { Board } from '@/components/board/board';
 import { BoardServer } from '@/components/board/experiment/server/board.server';
-import { ListsContainer } from '@/components/shad-demo/lists-container';
 import { createClient } from '@/utils/supabase/server';
 
 export default async function DashboardPage({
@@ -26,7 +24,6 @@ export default async function DashboardPage({
     .eq('id', params.boardId)
     .single();
 
-  const lists = await getBoardListsWithCards(boardData?.id);
   // TODO: check if this is correct, or should it be error.code === '400' ?
   if (error) return notFound();
   return (

@@ -11,7 +11,7 @@ export async function middleware(request: NextRequest) {
 
   // 👇 .pathname is located here
   const nextUrl = request.nextUrl;
-
+  console.log(request.url);
   // Allow access to the homepage without session
   if (nextUrl.pathname === '/') {
     return NextResponse.next();
