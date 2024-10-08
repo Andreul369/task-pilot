@@ -56,12 +56,19 @@ export function InviteTeamMembersForm({
     },
   });
 
-  const onSubmit = form.handleSubmit(async (data) => {
+  async function onSubmit(data: z.infer<typeof formSchema>) {
     // Remove invites without email (last appended invite validation)
-    const invites = data.invites.filter((invite) => invite.email !== undefined);
+    const filteredInvites = data.invites.filter(
+      (invite) => invite.email !== undefined,
+    );
     const pathName = '/settings';
-    await inviteWorkspacegMembersAction(userId, workspaceId, invites, pathName);
-  });
+    await inviteWorkspacegMembersAction(
+      userId,
+      workspaceId,
+      filteredInvites,
+      pathName,
+    );
+  }
 
   const { fields, append } = useFieldArray({
     name: 'invites',
@@ -153,12 +160,12 @@ export function InviteTeamMembersForm({
                 // disabled={inviteMembers.status === 'executing'}
                 className="w-full md:w-auto"
               >
-                {/* {inviteMembers.status === 'executing' ? ( */}
-                {/* <Loader2 className="h-4 w-4 animate-spin" /> */}
-                {/* ) : ( */}
-                {/* 'Invite' */}
+                {/* {inviteMembers.status === 'executing' ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  'Invite'
+                )} */}
                 Invite
-                {/* )} */}
               </Button>
             </DialogFooter>
           </div>

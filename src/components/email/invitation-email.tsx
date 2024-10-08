@@ -46,7 +46,7 @@ export const InvitationEmail = ({
   return (
     <Html>
       <Tailwind>
-        <head>
+        <Head>
           <Font
             fontFamily="Geist"
             fallbackFontFamily="Helvetica"
@@ -68,7 +68,7 @@ export const InvitationEmail = ({
             fontWeight={500}
             fontStyle="normal"
           />
-        </head>
+        </Head>
         <Preview>Join, {workspaceName} on Task Pilot</Preview>
 
         <Body className="mx-auto my-auto bg-[#fff] font-sans">
@@ -95,7 +95,7 @@ export const InvitationEmail = ({
             </Text>
             <Section className="mb-[42px] mt-[32px] text-center">
               <Button
-                className="rounded-md border border-solid border-[#121212] bg-transparent px-6 py-3 text-center text-[14px] font-medium text-[#121212] text-primary no-underline"
+                className="rounded-md border border-solid border-[#121212] bg-transparent px-6 py-3 text-center text-[14px] font-medium text-[#121212] no-underline"
                 href={inviteLink}
               >
                 Join the workspace

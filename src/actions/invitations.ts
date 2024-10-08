@@ -13,7 +13,7 @@ export const inviteWorkspacegMembersAction = async (
   userId: string,
   workspaceId: string,
   invites: {
-    email: string;
+    email?: string;
     role: 'member' | 'owner';
   }[],
   pathName: string,
@@ -27,7 +27,7 @@ export const inviteWorkspacegMembersAction = async (
       invited_by: userId,
     }));
 
-    const { data: invitesData, error } = await supabase
+    const { data: invitesData } = await supabase
       .from('user_invites')
       .upsert(data, {
         onConflict: 'email, workspace_id',
