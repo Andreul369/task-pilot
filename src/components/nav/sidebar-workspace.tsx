@@ -18,7 +18,7 @@ import {
 
 const SidebarWorkspace = ({ workspaces }) => {
   return (
-    <div className="hidden border-r bg-muted/40 md:block">
+    <div className="hidden  border-r bg-muted md:block">
       <div className="flex h-full max-h-screen w-56 flex-col gap-2 lg:w-72">
         <div className="flex h-14 items-center justify-between border-b px-4 lg:h-[60px]">
           <h3 className="text-lg font-semibold">Workspaces</h3>
@@ -27,7 +27,7 @@ const SidebarWorkspace = ({ workspaces }) => {
         <div className="flex-1">
           <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
             <Accordion type="multiple" className="w-full">
-              {/* {workspaces?.map((workspace) => (
+              {workspaces?.map((workspace) => (
                 <AccordionItem key={workspace.id} value={`${workspace.id}`}>
                   <AccordionTrigger>
                     <div className="flex items-center justify-start gap-3 text-base font-semibold">
@@ -84,7 +84,7 @@ const SidebarWorkspace = ({ workspaces }) => {
                     </Card>
                   </AccordionContent>
                 </AccordionItem>
-              ))} */}
+              ))}
             </Accordion>
           </nav>
         </div>

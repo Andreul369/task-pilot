@@ -18,8 +18,8 @@ export default function MarketingLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex min-h-screen flex-col">
-      <nav className="container z-50 flex h-14 items-center justify-between border-b bg-background">
+    <div className="relative flex min-h-screen flex-col">
+      <nav className="container sticky top-0 z-50 flex h-14 items-center justify-between border-b bg-background">
         <div className="mr-8 hidden items-center md:flex">
           <Icons.Logo className="mr-2 size-6" />
           <span className="text-lg font-bold tracking-tight">

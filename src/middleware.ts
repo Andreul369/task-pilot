@@ -17,10 +17,10 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  if (!session) {
-    const url = new URL('/login', request.url);
-    return NextResponse.redirect(url);
-  }
+  // if (!session) {
+  //   const url = new URL('/login', request.url);
+  //   return NextResponse.redirect(url);
+  // }
 
   return NextResponse.next();
 }

@@ -1,5 +1,3 @@
-import Image from 'next/image';
-
 import { getUserWorkspaces } from '@/actions/workspaces';
 import { AddBoardForm } from '@/components/forms/add-board-form';
 import * as Icons from '@/components/icons/icons';
@@ -17,14 +15,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui';
+import { getUser } from '@/utils/supabase/queries';
 import { createClient } from '@/utils/supabase/server';
 
 export default async function WorkspacePage() {
   const supabase = createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getUser(supabase);
 
   const workspaces = await getUserWorkspaces(user.id);
 
@@ -32,7 +28,7 @@ export default async function WorkspacePage() {
     <div className="flex flex-1 flex-col">
       <div className="flex h-14 items-center bg-muted/40">
         <h1 className="p-4 text-lg font-semibold md:text-2xl lg:p-6">
-          Workspaces
+          Your Workspaces
         </h1>
       </div>
       {/* <div className="flex flex-1 flex-col gap-12 p-4 lg:gap-6 lg:p-6">
@@ -77,7 +73,7 @@ export default async function WorkspacePage() {
               ))} */}
               <Popover>
                 <PopoverTrigger asChild>
-                  <Card className="relative h-24 w-full bg-muted/40 md:w-52">
+                  <Card className="relative h-24 w-full cursor-pointer bg-muted/40 md:w-52">
                     <CardHeader className="p-3">
                       <CardTitle className="text-lg">
                         Create new board

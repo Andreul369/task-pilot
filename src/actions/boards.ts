@@ -30,8 +30,8 @@ export const createBoard = async (
   imageFull: string,
   pathName: string,
 ) => {
+  // Step 1: Create the new board
   try {
-    const currentDate = new Date().toISOString();
     const supabase = createClient();
     const { data, error } = await supabase
       .from('boards')
@@ -41,14 +41,34 @@ export const createBoard = async (
         image_id: imageId,
         image_thumb_url: imageThumb,
         image_full_url: imageFull,
-        created_at: currentDate,
-        updated_at: currentDate,
       })
       .select('id') // specify the column you want returned
       .single();
 
     // If there was an error inserting the row, throw the error.
     if (error) throw error;
+
+    // Step 2 (Async): Fetch members and send notifications
+    (async () => {
+      const { data: members } = await supabase
+        .from('workspace_members')
+        .select('member_id')
+        .eq('workspace_id', workspaceId)
+        .neq('member_id', creatorId); // Exclude the creator
+
+      const memberIds = members.map((member) => member.member_id);
+
+      // Trigger notifications asynchronously
+      await Promise.all(
+        memberIds.map((memberId) =>
+          novu.trigger('new-board-notification', {
+            to: { subscriberId: memberId },
+            payload: { boardName, boardId: board.id, workspaceId },
+          }),
+        ),
+      );
+    })();
+
     // If not, the id of the inserted row.
     return data.id;
   } catch (error) {

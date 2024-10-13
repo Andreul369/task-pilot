@@ -13,6 +13,7 @@ import SidebarWorkspaceMobile from '@/components/nav/sidebar-workspace-mobile';
 import { UserNav } from '@/components/nav/user-nav';
 import { Button, buttonVariants, Input } from '@/components/ui';
 import { WorkspaceSwitcher } from '@/components/workspace-switcher';
+import { getUser } from '@/utils/supabase/queries';
 import { createClient } from '@/utils/supabase/server';
 
 // import { MainNav } from '../(dashboard)/_components/main-nav';
@@ -23,15 +24,13 @@ export default async function WorkspaceLayout({
   children: React.ReactNode;
 }>) {
   const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getUser(supabase);
   const workspaces = await getUserWorkspaces(user.id);
 
   return (
     <>
-      {/* <SidebarWorkspace workspaces={workspaces} /> */}
-      <div className="flex w-full">{children}</div>
+      <SidebarWorkspace workspaces={workspaces} />
+      <div className="flex h-full w-full">{children}</div>
     </>
   );
 }

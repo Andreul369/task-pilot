@@ -3,8 +3,6 @@ import { GeistSans } from 'geist/font/sans';
 
 import './globals.css';
 
-import { NovuProvider } from '@novu/react/hooks';
-
 import { TailwindIndicator } from '@/components/tailwind-indicator';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui';
@@ -47,7 +45,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={GeistSans.className}>
-      <body className="min-h-screen antialiased">
+      <body className="flex min-h-screen flex-col antialiased">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
           <TailwindIndicator />

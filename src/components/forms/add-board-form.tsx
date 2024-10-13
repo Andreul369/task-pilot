@@ -38,7 +38,12 @@ const formSchema = z.object({
   boardBackground: z.string(),
 });
 
-export function AddBoardForm({ workspaces }: { activeWorkspaceId: string }) {
+export function AddBoardForm({
+  workspaces,
+  userId,
+}: {
+  activeWorkspaceId: string;
+}) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [images, setImages] = useState<Array<Record<string, any>>>([]);

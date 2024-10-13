@@ -74,6 +74,7 @@ export const Settings = Lucide.Settings;
 export const ShoppingCart = Lucide.ShoppingCart;
 export const Smile = Lucide.Smile;
 export const Spinner = Lucide.Loader2;
+export const SquareKanban = Lucide.SquareKanban;
 export const Sun = Lucide.SunMedium;
 export const Star = Lucide.Star;
 export const Stopwatch = Lucide.Watch;

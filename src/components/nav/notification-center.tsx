@@ -23,8 +23,8 @@ export const NotificationCenter = () => {
 
   return (
     <NovuProvider
-      applicationIdentifier="AaIiSkt4rzmXs"
-      subscriberId="3ae2b863-3fdb-437f-91c0-8ec46f28e706"
+      applicationIdentifier="AaIiSkt4rzmX"
+      subscriberId="66fd5530cf609b134323973b"
     >
       <NotificationContent isOpen={isOpen} setOpen={setOpen} />
     </NovuProvider>
@@ -69,7 +69,7 @@ function NotificationItem({
           >
             <div>
               <div className="flex h-9 w-9 items-center justify-center space-y-0 rounded-full border">
-                {/* <Icons.Transactions /> */}
+                <Icons.SquareKanban className="size-5" />
               </div>
             </div>
             <div>
@@ -128,42 +128,6 @@ function NotificationItem({
           )}
         </div>
       );
-
-    case 'inbox':
-      return (
-        <div className="items-between flex justify-between space-x-4 px-3 py-3 hover:bg-secondary">
-          <Link
-            className="items-between flex justify-between space-x-4 "
-            onClick={() => setOpen(false)}
-            href={`/inbox?id=${recordId}`}
-          >
-            <div>
-              <div className="flex h-9 w-9 items-center justify-center space-y-0 rounded-full border">
-                {/* <Icons.Email /> */}
-              </div>
-            </div>
-            <div>
-              <p className="text-sm">{description}</p>
-              <span className="text-xs text-[#606060]">
-                {formatDistanceToNow(new Date(createdAt))} ago
-              </span>
-            </div>
-          </Link>
-          {markMessageAsRead && (
-            <div>
-              <Button
-                size="icon"
-                variant="secondary"
-                className="rounded-full bg-transparent hover:bg-[#1A1A1A]"
-                onClick={() => markMessageAsRead(id)}
-              >
-                {/* <Icons.Inventory2 /> */}
-              </Button>
-            </div>
-          )}
-        </div>
-      );
-
     default:
       return null;
   }
@@ -178,19 +142,12 @@ const NotificationContent = ({
 }) => {
   const { notifications, isLoading, fetchMore, hasMore } = useNotifications();
 
-  useEffect(() => {
-    if (isLoading) {
-      console.log('Loading notifications...');
-    } else {
-      console.log('Notifications:', notifications);
-    }
-  }, [isLoading, notifications]);
   const unreadNotifications = notifications?.filter(
-    (notification) => !notification.read,
+    (notification) => !notification.isRead,
   );
 
   const archivedNotifications = notifications?.filter(
-    (notification) => notification.read,
+    (notification) => notification.isArchived,
   );
 
   return (
@@ -241,65 +198,67 @@ const NotificationContent = ({
               <EmptyState description="No new notifications" />
             )} */}
 
-            {/* {unreadNotifications.length > 0 && (
+            {unreadNotifications?.length > 0 && (
               <ScrollArea className="h-[485px] pb-12">
                 <div className="divide-y">
-                  {unreadNotifications.map((notification) => {
+                  {unreadNotifications?.map((notification) => {
                     return (
                       <NotificationItem
                         key={notification.id}
                         id={notification.id}
-                        markMessageAsRead={markMessageAsRead}
+                        // markMessageAsRead={markMessageAsRead}
                         setOpen={setOpen}
-                        description={notification.payload.description}
+                        description={notification.body}
                         createdAt={notification.createdAt}
-                        recordId={notification.payload.recordId}
-                        type={notification.payload.type}
-                        from={notification.payload?.from}
-                        to={notification.payload?.to}
+                        // recordId={notification.payload.recordId}
+                        // should I do notification.payload.tag = 'boards' ?
+                        type="boards"
+                        // from={notification.payload?.from}
+                        to={notification.to.id}
                       />
                     );
                   })}
                 </div>
               </ScrollArea>
-            )} */}
+            )}
 
-            {/* {unreadNotifications.length > 0 && (
+            {unreadNotifications?.length > 0 && (
               <div className="absolute bottom-0 flex h-12 w-full items-center justify-center border-t-[1px]">
                 <Button
                   variant="secondary"
                   className="bg-transparent"
-                  onClick={markAllMessagesAsRead}
+                  // onClick={markAllMessagesAsRead}
                 >
                   Archive all
                 </Button>
               </div>
-            )} */}
+            )}
           </TabsContent>
 
           <TabsContent value="archive" className="mt-0">
             {/* {!archivedNotifications.length && (
               <EmptyState description="Nothing in the archive" />
-            )}
+            )} */}
 
-            {archivedNotifications.length > 0 && (
+            {archivedNotifications?.length > 0 && (
               <ScrollArea className="h-[490px]">
                 <div className="divide-y">
-                  {archivedNotifications.map((notification) => {
+                  {archivedNotifications?.map((notification) => {
                     return (
                       <NotificationItem
                         key={notification.id}
                         setOpen={setOpen}
-                        description={notification.payload.description}
+                        description={notification.body}
                         createdAt={notification.createdAt}
-                        recordId={notification.payload.recordId}
-                        type={notification.payload.type}
+                        // recordId={notification.payload.recordId}
+                        // type={notification.payload.type}
+                        type="boards"
                       />
                     );
                   })}
                 </div>
               </ScrollArea>
-            )} */}
+            )}
           </TabsContent>
         </Tabs>
       </PopoverContent>

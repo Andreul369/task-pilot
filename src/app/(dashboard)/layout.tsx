@@ -21,9 +21,10 @@ export default async function DashboardLayout({
   } = await supabase.auth.getUser();
 
   const workspaces = await getUserWorkspaces(user?.id);
+
   return (
     <>
-      <nav className="container z-50 flex h-14 items-center justify-between border-b bg-background">
+      <nav className="container sticky top-0 z-50 flex h-14 items-center justify-between border-b bg-background">
         <div className="mr-8 hidden items-center md:flex">
           <Icons.Logo className="mr-2 size-6" />
           <span className="text-lg font-bold tracking-tight">
@@ -53,7 +54,7 @@ export default async function DashboardLayout({
         </div>
       </nav>
 
-      <main className="flex flex-1">{children}</main>
+      <main className="flex w-full flex-grow">{children}</main>
     </>
   );
 }

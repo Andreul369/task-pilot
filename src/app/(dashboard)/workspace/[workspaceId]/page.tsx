@@ -13,6 +13,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui';
+import { getUser } from '@/utils/supabase/queries';
 import { createClient } from '@/utils/supabase/server';
 
 export default async function WorkspaceIdPage({
@@ -22,9 +23,7 @@ export default async function WorkspaceIdPage({
 }) {
   const supabase = createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getUser(supabase);
 
   const { data } = await supabase
     .from('workspaces')
@@ -97,9 +96,9 @@ export default async function WorkspaceIdPage({
               ))}
               <Popover>
                 <PopoverTrigger asChild>
-                  <Card className="h-28 w-full bg-muted/40 md:w-56">
+                  <Card className="h-28 w-full cursor-pointer bg-muted/40 md:w-56">
                     <CardHeader className="p-3">
-                      <CardTitle className="text-center text-lg">
+                      <CardTitle className=" text-center text-lg">
                         Create new board
                       </CardTitle>
                       <CardDescription className="text-center">
