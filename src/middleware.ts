@@ -10,12 +10,12 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getSession();
 
   // 👇 .pathname is located here
-  const nextUrl = request.nextUrl;
-  console.log(request.url);
-  // Allow access to the homepage without session
-  if (nextUrl.pathname === '/') {
-    return NextResponse.next();
-  }
+  // const nextUrl = request.nextUrl;
+  // console.log(request.url);
+  // // Allow access to the homepage without session
+  // if (nextUrl.pathname === '/') {
+  //   return NextResponse.next();
+  // }
 
   // if (!session) {
   //   const url = new URL('/login', request.url);
