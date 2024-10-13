@@ -23,7 +23,7 @@ export default async function WorkspacePage() {
   const user = await getUser(supabase);
 
   const workspaces = await getUserWorkspaces(user.id);
-
+  console.log(workspaces);
   return (
     <div className="flex flex-1 flex-col">
       <div className="flex h-14 items-center bg-muted/40">

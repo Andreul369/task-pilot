@@ -48,9 +48,9 @@ export async function BoardServer({ boardId }: { boardId: string }) {
     : [];
 
   return (
-    <div className="h-[calc(100vh-112px)]">
-      <div className="flex w-full items-center justify-between bg-black/25 backdrop-blur-sm">
-        <div className="flex w-full items-center justify-start gap-4 px-4 py-2">
+    <div className="h-full">
+      <div className="flex w-full items-center justify-between bg-black/25 px-4 py-2 backdrop-blur-sm">
+        <div className="flex w-full items-center justify-start gap-4">
           <UpdateBoardTitleForm
             boardId={boardData.id}
             boardTitle={boardData.title}

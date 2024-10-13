@@ -89,7 +89,7 @@ export function ListClient({ children, initialData, index }: ListClientProps) {
               {(provided) => (
                 <div ref={provided.innerRef} {...provided.droppableProps}>
                   <CardContent className="flex w-full flex-col gap-2 p-2">
-                    {list.cards.map((card, index) => (
+                    {list?.cards?.map((card, index) => (
                       <CardDialog
                         key={card.id}
                         initialData={card}

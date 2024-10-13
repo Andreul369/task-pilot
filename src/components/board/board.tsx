@@ -64,7 +64,6 @@ export function Board({
           )}`;
         }}
         className="h-full bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${boardData.image_full_url})` }}
       >
         <ResizablePanel
           defaultSize={defaultLayout[0]}
@@ -170,8 +169,8 @@ export function Board({
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={defaultLayout[1]} minSize={84}>
-          <div className="flex w-full items-center justify-between bg-black/25 backdrop-blur-sm">
-            <div className="flex w-full items-center justify-start gap-4 px-4 py-2">
+          <div className="flex w-full items-center justify-between bg-black/25 px-4 py-2 backdrop-blur-sm">
+            <div className="flex items-center justify-start gap-4">
               <UpdateBoardTitleForm
                 boardId={boardData.id}
                 boardTitle={boardData.title}

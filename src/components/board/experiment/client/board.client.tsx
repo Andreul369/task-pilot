@@ -86,7 +86,10 @@ export function BoardClient({ initialData }: ListsClientProps) {
                 setOrderedLists((prevLists) => {
                   return prevLists.map((list) => {
                     if (list.id === payload.new.list_id) {
-                      return { ...list, cards: [...list.cards, payload.new] };
+                      return {
+                        ...list,
+                        cards: [...(list.cards || []), payload.new],
+                      };
                     }
                     return list;
                   });
