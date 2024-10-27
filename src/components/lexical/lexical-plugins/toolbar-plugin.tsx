@@ -229,14 +229,15 @@ export default function ToolbarPlugin() {
               <ListOrdered className="mr-2 size-4" />
               <span>Numbered List</span>
             </DropdownMenuItem>
-            <DropdownMenuItem
-              onSelect={() =>
-                editor.dispatchCommand(INSERT_CHECK_LIST_COMMAND, undefined)
-              }
+            {/* <DropdownMenuItem
+              onSelect={() => {
+                editor.dispatchCommand(INSERT_CHECK_LIST_COMMAND, undefined);
+                setSelectedTextFormat('Check List');
+              }}
             >
               <ListChecks className="mr-2 size-4" />
               <span>Check List</span>
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
 

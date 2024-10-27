@@ -75,7 +75,6 @@ export function AddCardForm({ listId }: { listId: string }) {
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     const { cardTitle } = data;
-    console.log(cardTitle, 'submitted');
     await createCard(cardTitle, listId, pathName);
   }
 

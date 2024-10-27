@@ -1,29 +1,30 @@
 import { Suspense } from 'react';
 
-import { Tables } from '@/types/types_db';
 import { createClient } from '@/utils/supabase/server';
 import { ListClient } from '../client/list.client';
-import CardServer from './card.server';
 
 interface ListServerProps {
-  list: Tables<'lists'>;
+  listId: string;
   index: number;
 }
 
-export async function ListServer({ list, index }: ListServerProps) {
+export async function ListServer({ listId, index }: ListServerProps) {
   const supabase = createClient();
 
-  const { data: cards, error: cardError } = await supabase
-    .from('cards')
-    .select('*')
-    .eq('list_id', list.id)
-    .order('order', { ascending: true });
+  const { data: listData, error: listError } = await supabase
+    .from('lists')
+    .select('*, cards:cards(*)')
+    .eq('id', listId)
+    .single();
 
-  const cardComponents = cards?.map((card, index) => (
-    <Suspense key={card.id} fallback={<p>Loading...</p>}>
-      <CardServer card={card} index={index} />
+  if (listError) {
+    console.error(listError);
+    return <p>Error loading list data. {listError.message}</p>;
+  }
+
+  return (
+    <Suspense fallback={<p>Loading list...</p>}>
+      <ListClient initialData={listData} index={index} />
     </Suspense>
-  ));
-
-  return <ListClient list={list} cards={cards} />;
+  );
 }

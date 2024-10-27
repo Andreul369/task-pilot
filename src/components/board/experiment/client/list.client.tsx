@@ -32,23 +32,27 @@ interface ListClientProps {
 
 export function ListClient({ children, initialData, index }: ListClientProps) {
   const pathName = usePathname();
-  const [list, setList] = useState(initialData);
+  // const [list, setList] = useState(initialData);
 
-  useEffect(() => {
-    setList(initialData);
-  }, [initialData]);
+  // useEffect(() => {
+  //   setList(initialData);
+  // }, [initialData]);
   return (
-    <Draggable key={list.id} draggableId={list.id} index={index}>
+    <Draggable key={initialData.id} draggableId={initialData.id} index={index}>
       {(provided) => (
         <div
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
+          className="self-start"
         >
           <Card className="w-72 self-start bg-card/90">
             <CardHeader className="flex-row items-center justify-between p-2">
               <CardTitle className="text-base font-normal">
-                <UpdateListTitleForm listId={list.id} listTitle={list.title} />
+                <UpdateListTitleForm
+                  listId={initialData.id}
+                  listTitle={initialData.title}
+                />
               </CardTitle>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -64,9 +68,9 @@ export function ListClient({ children, initialData, index }: ListClientProps) {
                   <DropdownMenuItem
                     onClick={async () =>
                       await duplicateList(
-                        list.id,
-                        list.title,
-                        list.board_id,
+                        initialData.id,
+                        initialData.title,
+                        initialData.board_id,
                         pathName,
                       )
                     }
@@ -77,7 +81,11 @@ export function ListClient({ children, initialData, index }: ListClientProps) {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
                     onClick={async () =>
-                      await deleteList(list.id, list.board_id, pathName)
+                      await deleteList(
+                        initialData.id,
+                        initialData.board_id,
+                        pathName,
+                      )
                     }
                   >
                     Delete
@@ -85,11 +93,15 @@ export function ListClient({ children, initialData, index }: ListClientProps) {
                 </DropdownMenuContent>
               </DropdownMenu>
             </CardHeader>
-            <Droppable droppableId={list.id} type="card" direction="vertical">
+            <Droppable
+              droppableId={initialData.id}
+              type="card"
+              direction="vertical"
+            >
               {(provided) => (
                 <div ref={provided.innerRef} {...provided.droppableProps}>
                   <CardContent className="flex w-full flex-col gap-2 p-2">
-                    {list?.cards?.map((card, index) => (
+                    {initialData?.cards?.map((card, index) => (
                       <CardDialog
                         key={card.id}
                         initialData={card}
@@ -101,7 +113,7 @@ export function ListClient({ children, initialData, index }: ListClientProps) {
                   {/* 👇 add-card-form-container is used for closing form on click
               outside */}
                   <CardFooter className="add-card-form-container w-full p-2">
-                    <AddCardForm listId={list.id} />
+                    <AddCardForm listId={initialData.id} />
                   </CardFooter>
                 </div>
               )}

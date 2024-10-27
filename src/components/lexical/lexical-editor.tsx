@@ -1,20 +1,23 @@
-import { SetStateAction, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { CodeNode } from '@lexical/code';
-import ListPlugin, { ListItemNode, ListNode } from '@lexical/list';
+import { $generateNodesFromDOM } from '@lexical/html';
+import { ListItemNode, ListNode } from '@lexical/list';
 import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
+import { ListPlugin } from '@lexical/react/LexicalListPlugin';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
-import { EditorState } from 'lexical';
+import { $getRoot } from 'lexical';
 
 import { cn } from '@/utils/cn';
 import AddCommentPlugin from './lexical-plugins/add-comment-plugin';
 import ToolbarPlugin from './lexical-plugins/toolbar-plugin';
-import TreeViewPlugin from './lexical-plugins/tree-view-plugin';
+
+// import TreeViewPlugin from './lexical-plugins/tree-view-plugin';
 
 const theme = {
   // Theme styling goes here
@@ -28,12 +31,14 @@ const theme = {
   image: 'editor-image',
   link: 'editor-link',
   list: {
+    ol: 'editor-list-ol',
+    ul: 'editor-list-ul',
     listitem: 'editor-listitem',
+    listitemChecked: 'editor-listitem-checked',
+    listitemUnchecked: 'editor-listitem-unchecked',
     nested: {
       listitem: 'editor-nested-listitem',
     },
-    ol: 'editor-list-ol',
-    ul: 'editor-list-ul',
   },
   ltr: 'ltr',
   paragraph: 'editor-paragraph',
@@ -61,9 +66,23 @@ function onError(error: Error) {
 
 interface ILexicalEditor {
   className?: string;
+  cardId: string;
+  commentId?: string | undefined;
+  listId?: string;
+  initialContent?: string | null;
+  onCancel: () => void;
+  mode: 'description' | 'comment';
 }
 
-export function LexicalEditor({ className }: ILexicalEditor) {
+export function LexicalEditor({
+  className,
+  cardId,
+  commentId,
+  listId,
+  initialContent,
+  onCancel,
+  mode,
+}: ILexicalEditor) {
   const editorConfig = {
     namespace: 'Editor',
     nodes: [HeadingNode, ListNode, ListItemNode, QuoteNode, CodeNode],
@@ -75,15 +94,10 @@ export function LexicalEditor({ className }: ILexicalEditor) {
     theme: theme,
   };
 
-  const [editorState, setEditorState] = useState();
-  function onChange(editorState: SetStateAction<undefined>) {
-    setEditorState(editorState);
-    console.log(editorState);
-  }
-
   const placeholder = 'Enter some rich text...';
   return (
     <LexicalComposer initialConfig={editorConfig}>
+      <InitialContentPlugin content={initialContent} />
       <div className={cn('relative bg-muted', className)}>
         <ToolbarPlugin />
         <div className="relative bg-muted">
@@ -100,11 +114,37 @@ export function LexicalEditor({ className }: ILexicalEditor) {
             ErrorBoundary={LexicalErrorBoundary}
           />
           <HistoryPlugin />
+          <ListPlugin />
           <AutoFocusPlugin />
         </div>
       </div>
-      <AddCommentPlugin />
-      <TreeViewPlugin />
+      <AddCommentPlugin
+        cardId={cardId}
+        commentId={commentId}
+        listId={listId}
+        onCancel={onCancel}
+        mode={mode}
+      />
+      {/* <TreeViewPlugin /> */}
     </LexicalComposer>
   );
+}
+
+function InitialContentPlugin({ content }: { content?: string | null }) {
+  const [editor] = useLexicalComposerContext();
+
+  useEffect(() => {
+    if (content) {
+      editor.update(() => {
+        const parser = new DOMParser();
+        const dom = parser.parseFromString(content, 'text/html');
+        const nodes = $generateNodesFromDOM(editor, dom);
+        const root = $getRoot();
+        root.clear();
+        root.append(...nodes);
+      });
+    }
+  }, [editor, content]);
+
+  return null;
 }

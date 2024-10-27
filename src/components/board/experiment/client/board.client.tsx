@@ -35,12 +35,12 @@ export function BoardClient({ initialData }: ListsClientProps) {
           event: '*',
           schema: 'public',
           table: 'lists',
-          filter: `board_id=eq.${boardId}`,
         },
         (payload) => {
           switch (payload.eventType) {
             case 'INSERT':
               {
+                console.log('Received payload INSERT:', payload);
                 setOrderedLists((prevLists) => [...prevLists, payload.new]);
               }
               break;
@@ -54,6 +54,13 @@ export function BoardClient({ initialData }: ListsClientProps) {
                         : list,
                     )
                     .sort((a, b) => a.order - b.order),
+                );
+              }
+              break;
+            case 'DELETE':
+              {
+                setOrderedLists((prevLists) =>
+                  prevLists.filter((list) => list.id !== payload.old.id),
                 );
               }
               break;
@@ -132,6 +139,20 @@ export function BoardClient({ initialData }: ListsClientProps) {
                 });
               }
               break;
+            case 'DELETE':
+              {
+                setOrderedLists((prevLists) =>
+                  prevLists.map((list) => {
+                    return {
+                      ...list,
+                      cards: list.cards.filter(
+                        (card) => card.id !== payload.old.id,
+                      ),
+                    };
+                  }),
+                );
+              }
+              break;
             default:
               break;
           }
@@ -174,7 +195,6 @@ export function BoardClient({ initialData }: ListsClientProps) {
             order,
           }),
         );
-        setOrderedLists(newOrderedLists);
 
         await updateListsOrder(listsToUpdate);
       }
@@ -200,7 +220,6 @@ export function BoardClient({ initialData }: ListsClientProps) {
 
           // when there was an error, this was sourcelist.cards = cards
           sourceList.cards = [...cards];
-          setOrderedLists(newOrderedLists);
           await updateCardsOrder(sourceList.cards);
         } else {
           const [movedCard] = sourceList.cards.splice(source.index, 1);
@@ -210,7 +229,6 @@ export function BoardClient({ initialData }: ListsClientProps) {
 
           sourceList.cards.forEach((card, idx) => (card.order = idx));
           destinationList.cards.forEach((card, idx) => (card.order = idx));
-          setOrderedLists(newOrderedLists);
           await updateCardsOrder([
             ...sourceList.cards,
             ...destinationList.cards,
@@ -228,7 +246,7 @@ export function BoardClient({ initialData }: ListsClientProps) {
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
-            className="add-list-form-container flex w-max gap-3 p-4"
+            className="add-list-form-container flex flex-1 gap-3 p-4"
           >
             {orderedLists.map((list, index) => (
               <ListClient key={list.id} initialData={list} index={index} />

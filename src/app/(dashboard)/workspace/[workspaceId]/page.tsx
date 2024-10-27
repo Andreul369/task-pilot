@@ -77,7 +77,7 @@ export default async function WorkspaceIdPage({
           </div> */}
           <div className="flex flex-col gap-1">
             <h3 className="text-2xl font-bold tracking-tight">Your boards</h3>
-            <div className="row-wrap flex flex-col gap-4">
+            <div className="row-wrap flex flex-col gap-4 md:flex-row">
               {workspaceBoards?.map((board) => (
                 <Link key={board.id} href={`/board/${board.id}`}>
                   <Card

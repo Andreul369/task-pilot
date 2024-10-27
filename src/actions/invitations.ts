@@ -43,6 +43,7 @@ export const inviteWorkspacegMembersAction = async (
         InvitationEmail({
           invitedByEmail: invite.user.email,
           invitedByName: invite.user.full_name,
+          workspaceId: invite.workspace.id,
           email: invite.email,
           workspaceName: invite.workspace.name,
           inviteCode: invite.code,

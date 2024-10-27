@@ -28,9 +28,9 @@ export default async function WorkspaceLayout({
   const workspaces = await getUserWorkspaces(user.id);
 
   return (
-    <>
+    <div className="relative flex">
       <SidebarWorkspace workspaces={workspaces} />
       <div className="flex h-full w-full">{children}</div>
-    </>
+    </div>
   );
 }

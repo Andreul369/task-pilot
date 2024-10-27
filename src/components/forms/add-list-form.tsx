@@ -80,7 +80,6 @@ export function AddListForm() {
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     const { listTitle } = data;
-
     await createList(listTitle, boardId, pathName);
   }
 

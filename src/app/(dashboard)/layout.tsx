@@ -24,37 +24,32 @@ export default async function DashboardLayout({
 
   return (
     <>
-      <nav className="container sticky top-0 z-50 flex h-14 items-center justify-between border-b bg-background">
-        <div className="mr-8 hidden items-center md:flex">
+      <nav className="sticky top-0 z-50 flex h-14 items-center justify-between border-b bg-background">
+        <Link href="/" className="mr-8 hidden items-center md:flex">
           <Icons.Logo className="mr-2 size-6" />
           <span className="text-lg font-bold tracking-tight">
             {siteConfig.name}
           </span>
-        </div>
-        {/* ={workspaces || []} how you fix the ts error. */}
+        </Link>
         <SidebarWorkspaceMobile workspaces={workspaces || []} />
 
-        <Link href="/search" className="block md:hidden">
-          <Icons.Search className="size-5 text-muted-foreground" />
-        </Link>
-
         <div className="hidden bg-background/50 backdrop-blur supports-[backdrop-filter]:bg-background/60 md:block">
-          <form>
+          {/* <form>
             <div className="relative">
               <Icons.Search className="absolute left-2 top-2.5 size-5 text-muted-foreground" />
               <Input placeholder="Search" className="pl-8" />
             </div>
-          </form>
+          </form> */}
         </div>
         <div className="flex items-center gap-4">
-          <WorkspaceSwitcher workspaces={workspaces} />
+          {user && <WorkspaceSwitcher workspaces={workspaces} />}
 
           <NotificationCenter />
           <UserNav />
         </div>
       </nav>
 
-      <main className="flex w-full flex-grow">{children}</main>
+      <main className="min-h-[calc(100vh-56px)]">{children}</main>
     </>
   );
 }

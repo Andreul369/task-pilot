@@ -54,8 +54,6 @@ export function AddBoardForm({
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        //TODO: 👇
-        throw Error('remove this before prod');
         const result = await unsplash.photos.getRandom({
           collectionIds: ['317099'],
           count: 8,
@@ -206,7 +204,7 @@ export function AddBoardForm({
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {workspaces.map((workspace) => (
+                  {workspaces?.map((workspace) => (
                     <SelectItem key={workspace.id} value={workspace.id}>
                       {workspace.name}
                     </SelectItem>

@@ -21,6 +21,7 @@ interface InviteEmailProps {
   invitedByEmail?: string;
   invitedByName?: string;
   workspaceName?: string;
+  workspaceId?: string;
   inviteCode?: string;
 }
 
@@ -39,9 +40,10 @@ export const InvitationEmail = ({
   invitedByName = 'Pontus Abrahamsson',
   email = 'pontus@lostisland.co',
   workspaceName = 'Acme Co',
+  workspaceId = '123',
   inviteCode = 'jnwe9203frnwefl239jweflasn1230oqef',
 }: InviteEmailProps) => {
-  const inviteLink = `${baseAppUrl}/teams/invite/${inviteCode}`;
+  const inviteLink = `${baseAppUrl}/workspace/${workspaceId}/${inviteCode}`;
 
   return (
     <Html>

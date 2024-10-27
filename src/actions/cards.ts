@@ -83,15 +83,74 @@ export const updateCardsOrder = async (
 
   try {
     // Prepare data for batch update
-    const { data, error } = await supabase
-      .rpc('update_cards_order', {
-        cardstoupdate: cardsToUpdate,
-      })
-      .select();
+    const { data, error } = await supabase.rpc('update_cards_order', {
+      cardstoupdate: cardsToUpdate,
+    });
 
-    return data;
     if (error) console.log(error);
+    return data;
   } catch (error) {
     console.error('Error updating list order:', error);
+  }
+};
+
+export const addCardDescription = async (
+  cardId: string,
+  listId: string,
+  description: string,
+) => {
+  const supabase = createClient();
+
+  try {
+    const { data, error } = await supabase
+      .from('cards')
+      .update({
+        description: description,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', cardId) // Match the existing card's id
+      .select()
+      .single();
+
+    if (error) console.log(error);
+    return data;
+  } catch (error) {
+    console.error('Error updating list order:', error);
+  }
+};
+
+export const upsertCardComment = async (
+  commentId: string | undefined,
+  cardId: string,
+  comment: string,
+  userId: string,
+) => {
+  const supabase = createClient();
+
+  try {
+    const { data, error } = await supabase
+      .from('card_comments')
+      .upsert(
+        {
+          id: commentId || undefined, // If id exists, it will update; if not, it will insert
+          card_id: cardId,
+          comment,
+          user_id: userId,
+          updated_at: new Date().toISOString(),
+        },
+        {
+          onConflict: 'id', // Specify which column determines if we update
+          ignoreDuplicates: false,
+        },
+      )
+      .select()
+      .single();
+
+    if (error) throw error;
+    return { data };
+  } catch (error) {
+    return error instanceof Error
+      ? { error: error.message }
+      : { error: 'Error managing card comment' };
   }
 };

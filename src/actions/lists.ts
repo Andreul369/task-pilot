@@ -43,14 +43,19 @@ export const createList = async (
       .limit(1)
       .single();
 
-    const { error: workspaceError } = await supabase.from('lists').insert({
-      board_id: boardId,
-      title: listTitle,
-      order: biggestOrder ? biggestOrder.order + 1 : 1,
-      created_at: currentDate,
-      updated_at: currentDate,
-    });
+    const { data, error: workspaceError } = await supabase
+      .from('lists')
+      .insert({
+        board_id: boardId,
+        title: listTitle,
+        order: biggestOrder ? biggestOrder.order + 1 : 1,
+        created_at: currentDate,
+        updated_at: currentDate,
+      })
+      .select()
+      .single();
 
+    return data;
     if (workspaceError) throw workspaceError;
   } catch (error) {
     return error instanceof Error
@@ -144,7 +149,6 @@ export const deleteList = async (
       : { error: 'Error from getWorkspaceBoards.' };
   }
   revalidatePath(pathName);
-  redirect(pathName);
 };
 
 export const updateListsOrder = async (

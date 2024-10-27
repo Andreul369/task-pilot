@@ -1,10 +1,11 @@
+import Link from 'next/link';
+
 import { getUserWorkspaces } from '@/actions/workspaces';
 import { AddBoardForm } from '@/components/forms/add-board-form';
 import * as Icons from '@/components/icons/icons';
 import {
   Card,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
   Popover,
@@ -22,8 +23,15 @@ export default async function WorkspacePage() {
   const supabase = createClient();
   const user = await getUser(supabase);
 
-  const workspaces = await getUserWorkspaces(user.id);
-  console.log(workspaces);
+  const { data: workspaces, error } = await supabase
+    .from('workspaces')
+    .select(`*, boards (*)`)
+    .eq('owner_id', user.id);
+
+  if (error) {
+    console.error('Error fetching workspaces:', error);
+    return <div>Error loading workspaces</div>;
+  }
   return (
     <div className="flex flex-1 flex-col">
       <div className="flex h-14 items-center bg-muted/40">
@@ -31,46 +39,35 @@ export default async function WorkspacePage() {
           Your Workspaces
         </h1>
       </div>
-      {/* <div className="flex flex-1 flex-col gap-12 p-4 lg:gap-6 lg:p-6">
-        <div className="flex flex-col gap-1">
-          <h3 className="flex items-center gap-4 text-2xl font-bold tracking-tight">
-            <span>Starred boards</span>
-            <Icons.Star className="size-5" />
-          </h3>
-          <p className="text-sm text-muted-foreground">
-            You can start selling as soon as you add a product.
-          </p>
-          <div className="row-wrap flex gap-4">
-            <Card className="h-24 w-52 bg-muted/40">
-              <CardHeader className="p-3">
-                <CardTitle className="text-lg">Board #1</CardTitle>
-              </CardHeader>
-            </Card>
-            <Card className="h-24 w-52 bg-muted/40">
-              <CardHeader className="p-3">
-                <CardTitle className="text-lg">Board #2</CardTitle>
-              </CardHeader>
-            </Card>
-          </div>
-        </div>  */}
 
       {workspaces?.length > 0 &&
         workspaces.map((workspace) => (
-          <div key={workspace.id} className="flex flex-col gap-1">
+          <div
+            key={workspace.id}
+            className="flex flex-col gap-1 p-4 lg:gap-6 lg:p-6"
+          >
             <h3 className="text-2xl font-bold tracking-tight">
               {workspace.name}
             </h3>
-            <p className="text-sm text-muted-foreground">
-              You can start selling as soon as you add a product.
-            </p>
+
             <div className="row-wrap flex gap-4">
-              {/* {workspace.boards.map((board) => (
-                <Card key={board.id} className="h-24 w-52 bg-muted/40">
-                  <CardHeader className="p-3">
-                    <CardTitle className="text-lg">{board.name}</CardTitle>
-                  </CardHeader>
-                </Card>
-              ))} */}
+              {workspace.boards.map((board) => (
+                <Link key={board.id} href={`/board/${board.id}`}>
+                  <Card
+                    className="h-28 w-full cursor-pointer bg-cover bg-center md:w-56"
+                    style={{ backgroundImage: `url(${board.image_thumb_url})` }}
+                  >
+                    <div className="group relative flex h-full w-full flex-col justify-between p-3">
+                      <div className="absolute inset-0 bg-black/10 transition group-hover:bg-black/0" />
+                      <h4 className="z-10 text-lg font-semibold">
+                        {board.title}
+                      </h4>
+                      <Icons.Star className="z-10 hidden size-4 self-end group-hover:block" />
+                    </div>
+                  </Card>
+                </Link>
+              ))}
+
               <Popover>
                 <PopoverTrigger asChild>
                   <Card className="relative h-24 w-full cursor-pointer bg-muted/40 md:w-52">
@@ -106,32 +103,21 @@ export default async function WorkspacePage() {
           </div>
         ))}
 
-      {/* <div className="flex flex-col gap-1">
-          <h3 className="text-2xl font-bold tracking-tight">
-            Guest workspaces
-          </h3>
-          <p className="text-sm text-muted-foreground">
-            You can start selling as soon as you add a product.
-          </p>
-          <div className="row-wrap flex gap-4">
-            <Card className="h-24 w-52 bg-muted/40">
-              <CardHeader className="p-3">
-                <CardTitle className="text-lg">Dev Department #3</CardTitle>
-              </CardHeader>
-            </Card>
-            <Card className="h-24 w-52 bg-muted/40">
-              <CardHeader className="p-3">
-                <CardTitle className="text-lg">Sales Department #4</CardTitle>
-              </CardHeader>
-            </Card>
-          </div>
-        </div> */}
-      {/* <Pricing
-            user={user}
-            products={products ?? []}
-            subscription={subscription}
-          /> */}
-      {/* </div> */}
+      <div className="flex flex-col gap-1 p-4 lg:gap-6 lg:p-6">
+        <h3 className="text-2xl font-bold tracking-tight">Guest workspaces</h3>
+        <div className="row-wrap flex gap-4">
+          <Card className="h-24 w-52 bg-muted/40">
+            <CardHeader className="p-3">
+              <CardTitle className="text-lg">Dev Department #3</CardTitle>
+            </CardHeader>
+          </Card>
+          <Card className="h-24 w-52 bg-muted/40">
+            <CardHeader className="p-3">
+              <CardTitle className="text-lg">Sales Department #4</CardTitle>
+            </CardHeader>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 }

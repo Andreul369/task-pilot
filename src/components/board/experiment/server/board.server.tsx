@@ -1,5 +1,3 @@
-import { Suspense } from 'react';
-
 import { UpdateBoardTitleForm } from '@/components/forms/board-title-form';
 import * as Icons from '@/components/icons/icons';
 import {
@@ -12,7 +10,6 @@ import {
 } from '@/components/ui';
 import { createClient } from '@/utils/supabase/server';
 import { BoardClient } from '../client/board.client';
-import { ListServer } from './list.server';
 
 export async function BoardServer({ boardId }: { boardId: string }) {
   const supabase = createClient();
@@ -39,16 +36,8 @@ export async function BoardServer({ boardId }: { boardId: string }) {
     return <p>Error loading list data. {listsError.message}</p>;
   }
 
-  const listComponents = lists
-    ? lists.map((list, index) => (
-        <Suspense key={list.id} fallback={<p>Loading list...</p>}>
-          <ListServer list={list} index={index} />
-        </Suspense>
-      ))
-    : [];
-
   return (
-    <div className="h-full">
+    <>
       <div className="flex w-full items-center justify-between bg-black/25 px-4 py-2 backdrop-blur-sm">
         <div className="flex w-full items-center justify-start gap-4">
           <UpdateBoardTitleForm
@@ -84,6 +73,6 @@ export async function BoardServer({ boardId }: { boardId: string }) {
         </DropdownMenu>
       </div>
       <BoardClient initialData={lists} />
-    </div>
+    </>
   );
 }
