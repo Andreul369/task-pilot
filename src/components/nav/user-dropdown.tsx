@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { CreditCard, Settings, User } from 'lucide-react';
+import { Castle, CreditCard, Settings, User } from 'lucide-react';
 
 import * as Icons from '@/components/icons/icons';
 import {
@@ -18,10 +18,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
+  Label,
+  Switch,
 } from '@/components/ui';
 import { getInitials } from '@/utils/helpers';
 import SignOut from '../forms/AuthForms/sign-out';
 import { CreateWorkspaceDialog } from '../forms/create-workspace-form';
+import ThemeToggle from '../theme-toggle';
 
 const UserDropdown = ({
   avatarUrl,
@@ -62,13 +65,13 @@ const UserDropdown = ({
               <Link href={`/${id}/settings`}>
                 <User className="mr-2 size-4" />
                 <span>Profile</span>
-                <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem disabled>
-              <Settings className="mr-2 size-4" />
-              <span>Settings</span>
-              <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+            <DropdownMenuItem asChild>
+              <Link href={`/workspace`}>
+                <Castle className="mr-2 size-4" />
+                <span>Workspaces</span>
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
               <DialogTrigger asChild>
@@ -81,14 +84,10 @@ const UserDropdown = ({
                 </Button>
               </DialogTrigger>
             </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href={`/${id}/billing`}>
-                <CreditCard className="mr-2 size-4" />
-                <span>Billing</span>
-                <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-              </Link>
-            </DropdownMenuItem>
           </DropdownMenuGroup>
+          <DropdownMenuItem asChild>
+            <ThemeToggle />
+          </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
             <SignOut />

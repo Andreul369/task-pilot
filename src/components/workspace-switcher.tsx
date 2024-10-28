@@ -10,7 +10,6 @@ import {
   Command,
   CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandItem,
   CommandList,
   Popover,
@@ -51,7 +50,6 @@ export function WorkspaceSwitcher({ workspaces }: WorkspaceSwitcherProps) {
       </PopoverTrigger>
       <PopoverContent className="w-[210px] p-0">
         <Command>
-          <CommandInput placeholder="Search workspace..." />
           <CommandList>
             <CommandEmpty>No workspace found.</CommandEmpty>
             <CommandGroup>

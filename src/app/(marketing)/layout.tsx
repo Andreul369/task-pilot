@@ -1,6 +1,5 @@
 import { Suspense } from 'react';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
 
 // import { siteConfig } from '~/app/config';
 // import { MobileDropdown } from '~/components/mobile-nav';
@@ -29,18 +28,6 @@ export default function MarketingLayout({
         </div>
         {/* <SidebarWorkspaceMobile /> */}
 
-        <Link href="/search" className="block md:hidden">
-          <Icons.Search className="size-5 text-muted-foreground" />
-        </Link>
-
-        <div className="hidden bg-background/50 backdrop-blur supports-[backdrop-filter]:bg-background/60 md:block">
-          <form>
-            <div className="relative">
-              <Icons.Search className="absolute left-2 top-2.5 size-5 text-muted-foreground" />
-              <Input placeholder="Search" className="pl-8" />
-            </div>
-          </form>
-        </div>
         <div className="ml-auto flex items-center space-x-4">
           <Suspense>
             <DashboardLink />

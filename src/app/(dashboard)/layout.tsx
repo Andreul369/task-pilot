@@ -24,7 +24,7 @@ export default async function DashboardLayout({
 
   return (
     <>
-      <nav className="sticky top-0 z-50 flex h-14 items-center justify-between border-b bg-background">
+      <nav className="sticky top-0 z-50 flex h-14 items-center justify-between border-b bg-background px-4">
         <Link href="/" className="mr-8 hidden items-center md:flex">
           <Icons.Logo className="mr-2 size-6" />
           <span className="text-lg font-bold tracking-tight">

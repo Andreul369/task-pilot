@@ -1,7 +1,11 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 import * as Icons from '@/components/icons/icons';
+import { cn } from '@/utils/cn';
 import {
   Accordion,
   AccordionContent,
@@ -17,16 +21,21 @@ import {
 } from '../ui';
 
 const SidebarWorkspace = ({ workspaces }) => {
+  const pathname = usePathname();
+  const pathSegments = pathname.split('/');
+  const currentPage = pathSegments.pop(); // gets 'settings', 'activity', etc.
+  const currentWorkspaceId = pathSegments[pathSegments.length - 1];
+
   return (
     <div className="sticky top-14 hidden h-[calc(100vh-56px)] border-r  bg-muted/40 md:block">
       <div className="flex h-full max-h-screen w-56 flex-col gap-2 lg:w-72">
-        <div className="flex h-14 items-center justify-between border-b px-4 lg:h-[60px]">
-          <h3 className="text-lg font-semibold">Workspaces</h3>
-          {/* <Icons.Plus className="size-6" /> */}
-        </div>
         <div className="flex-1">
           <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-            <Accordion type="multiple" className="w-full">
+            <Accordion
+              type="multiple"
+              className="w-full"
+              defaultValue={[currentWorkspaceId]}
+            >
               {workspaces?.map((workspace) => (
                 <AccordionItem key={workspace.id} value={`${workspace.id}`}>
                   <AccordionTrigger>
@@ -38,14 +47,22 @@ const SidebarWorkspace = ({ workspaces }) => {
                   <AccordionContent>
                     <Link
                       href={`/workspace/${workspace.id}`}
-                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                      className={cn(
+                        'flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary',
+                        currentPage === workspace.id && 'bg-muted text-primary',
+                      )}
                     >
                       <Icons.ClipboardList className="size-4" />
                       Boards
                     </Link>
                     <Link
                       href={`/workspace/${workspace.id}/activity`}
-                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                      className={cn(
+                        'flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary',
+                        currentWorkspaceId === workspace.id &&
+                          currentPage === 'activity' &&
+                          'bg-muted text-primary',
+                      )}
                     >
                       <Icons.Activity className="size-4" />
                       Activity
@@ -55,14 +72,24 @@ const SidebarWorkspace = ({ workspaces }) => {
                     </Link>
                     <Link
                       href={`/workspace/${workspace.id}/settings`}
-                      className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary"
+                      className={cn(
+                        'flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary',
+                        currentWorkspaceId === workspace.id &&
+                          currentPage === 'settings' &&
+                          'bg-muted text-primary',
+                      )}
                     >
                       <Icons.Settings className="size-4" />
                       Settings
                     </Link>
                     <Link
                       href={`/workspace/${workspace.id}/billing`}
-                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                      className={cn(
+                        'flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary',
+                        currentWorkspaceId === workspace.id &&
+                          currentPage === 'billing' &&
+                          'bg-muted text-primary',
+                      )}
                     >
                       <Icons.CreditCard className="size-4" />
                       Billing

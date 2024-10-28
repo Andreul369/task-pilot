@@ -4,53 +4,45 @@ import * as React from 'react';
 import { useTheme } from 'next-themes';
 
 import * as Icons from '@/components/icons/icons';
-import {
-  Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui';
+import { Switch } from '@/components/ui';
 
-export default function ThemeToggle(props: {
-  align?: 'center' | 'start' | 'end';
-  side?: 'top' | 'bottom';
-}) {
+const ThemeToggle = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>((props, ref) => {
   const { setTheme, theme } = useTheme();
 
-  const triggerIcon = {
-    light: <Icons.Sun className="h-6 w-6" />,
-    dark: <Icons.MoonShad className="h-6 w-6" />,
-    system: <Icons.Computer className="h-6 w-6" />,
-  }[theme as 'light' | 'dark' | 'system'];
+  const themeContent = {
+    light: {
+      icon: <Icons.Sun className="size-4" />,
+      text: 'Light Mode',
+    },
+    dark: {
+      icon: <Icons.MoonShad className="size-4" />,
+      text: 'Dark Mode',
+    },
+  }[theme as 'light' | 'dark'];
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="gap-1 px-2 text-lg font-semibold md:text-base"
-        >
-          {triggerIcon}
-          <span className="capitalize">{theme}</span>
-          <span className="sr-only">Toggle theme</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align={props.align} side={props.side}>
-        <DropdownMenuItem onClick={() => setTheme('light')}>
-          <Icons.Sun className="mr-2 h-4 w-4" />
-          <span>Light</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme('dark')}>
-          <Icons.MoonShad className="mr-2 h-4 w-4" />
-          <span>Dark</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme('system')}>
-          <Icons.Computer className="mr-2 h-4 w-4" />
-          <span>System</span>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div
+      ref={ref}
+      {...props}
+      className="flex w-full items-center justify-between px-2"
+      onClick={(e) => e.preventDefault()}
+    >
+      <p className="flex items-center gap-2">
+        {themeContent.icon}
+        <span>{themeContent.text}</span>
+      </p>
+      <Switch
+        id="theme-toggle"
+        checked={theme === 'dark'}
+        onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+      />
+    </div>
   );
-}
+});
+
+ThemeToggle.displayName = 'ThemeToggle';
+
+export default ThemeToggle;
