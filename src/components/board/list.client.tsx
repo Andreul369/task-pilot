@@ -1,7 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useParams, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { Draggable, Droppable } from '@hello-pangea/dnd';
 
 import { deleteList, duplicateList } from '@/actions/lists';
@@ -22,16 +21,18 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui';
 import { Tables } from '@/types/types_db';
-import { CardDialog } from './card.client';
+import { CardDialog } from '../card/card.client';
 
 interface ListClientProps {
-  initialData: Tables<'lists'>;
-  children?: React.ReactNode;
+  initialData: Tables<'lists'> & {
+    cards: Tables<'cards'>[];
+  };
   index: number;
 }
 
-export function ListClient({ children, initialData, index }: ListClientProps) {
+export function ListClient({ initialData, index }: ListClientProps) {
   const pathName = usePathname();
+
   // const [list, setList] = useState(initialData);
 
   // useEffect(() => {

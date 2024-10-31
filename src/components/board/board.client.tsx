@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 
 import { updateCardsOrder } from '@/actions/cards';
@@ -11,8 +10,8 @@ import { Tables } from '@/types/types_db';
 import { createClient } from '@/utils/supabase/client';
 import { ListClient } from './list.client';
 
-interface ListsClientProps {
-  initialData: (Tables<'lists'> & { cards: Tables<'cards'>[] })[];
+interface ListsClientProps extends Tables<'lists'> {
+  initialData: Pick<Tables<'cards'>, 'id' | 'list_id' | 'title' | 'order'>[];
 }
 
 function reorder<T>(list: T[], startIndex: number, endIndex: number) {
@@ -24,7 +23,6 @@ function reorder<T>(list: T[], startIndex: number, endIndex: number) {
 
 export function BoardClient({ initialData }: ListsClientProps) {
   const supabase = createClient();
-  const { boardId } = useParams<{ boardId: string }>();
   const [orderedLists, setOrderedLists] = useState(initialData);
   useEffect(() => {
     const channel = supabase

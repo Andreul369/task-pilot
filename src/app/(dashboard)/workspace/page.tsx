@@ -1,6 +1,5 @@
 import Link from 'next/link';
 
-import { getUserWorkspaces } from '@/actions/workspaces';
 import { AddBoardForm } from '@/components/forms/add-board-form';
 import * as Icons from '@/components/icons/icons';
 import {
@@ -16,6 +15,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui';
+import { MAX_FREE_BOARDS } from '@/constants/boards';
+import { getAvailableCount } from '@/utils/org-limit';
 import { getUser } from '@/utils/supabase/queries';
 import { createClient } from '@/utils/supabase/server';
 
@@ -25,13 +26,14 @@ export default async function WorkspacePage() {
 
   const { data: workspaces, error } = await supabase
     .from('workspaces')
-    .select(`*, boards (*)`)
+    .select(`*, boards (*), workspace_limits (count)`)
     .eq('owner_id', user.id);
 
   if (error) {
     console.error('Error fetching workspaces:', error);
     return <div>Error loading workspaces</div>;
   }
+
   return (
     <div className="flex flex-1 flex-col">
       <div className="flex h-14 items-center bg-muted/40">
@@ -75,7 +77,10 @@ export default async function WorkspacePage() {
                       <CardTitle className="text-lg">
                         Create new board
                       </CardTitle>
-                      <CardDescription>5 remaining</CardDescription>
+                      <CardDescription>
+                        {MAX_FREE_BOARDS - workspace.workspace_limits?.count}{' '}
+                        remaining
+                      </CardDescription>
                     </CardHeader>
                     <TooltipProvider delayDuration={0}>
                       <Tooltip>
@@ -96,7 +101,12 @@ export default async function WorkspacePage() {
                   side="right"
                   sideOffset={6}
                 >
-                  <AddBoardForm workspaceId={workspace.id} />
+                  <AddBoardForm
+                    workspaceId={workspace.id}
+                    workspaceLimits={
+                      MAX_FREE_BOARDS - workspace.workspace_limits?.count
+                    }
+                  />
                 </PopoverContent>
               </Popover>
             </div>

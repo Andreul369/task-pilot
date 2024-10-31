@@ -13,6 +13,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui';
+import { MAX_FREE_BOARDS } from '@/constants/boards';
+import { getAvailableCount } from '@/utils/org-limit';
 import { getUser } from '@/utils/supabase/queries';
 import { createClient } from '@/utils/supabase/server';
 
@@ -35,6 +37,8 @@ export default async function WorkspaceIdPage({
 
   const workspaces = await getUserWorkspaces(user.id);
   const workspaceBoards = await getWorkspaceBoards(params.workspaceId);
+  const availableCount = await getAvailableCount(params.workspaceId);
+
   return (
     <div className="flex flex-1 flex-col">
       <div className="flex h-14 items-center bg-muted/40">
@@ -102,7 +106,7 @@ export default async function WorkspaceIdPage({
                         Create new board
                       </CardTitle>
                       <CardDescription className="text-center">
-                        7 remaining
+                        {MAX_FREE_BOARDS - availableCount} remaining
                       </CardDescription>
                     </CardHeader>
                   </Card>
@@ -116,6 +120,7 @@ export default async function WorkspaceIdPage({
                   <AddBoardForm
                     activeWorkspaceId={params.workspaceId}
                     workspaces={workspaces}
+                    workspaceLimits={MAX_FREE_BOARDS - availableCount}
                   />
                 </PopoverContent>
               </Popover>

@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 
 import { Tables } from '@/types/types_db';
 import { createClient } from '@/utils/supabase/server';
+import { createAuditLog } from './audit-logs';
 
 export const getBoardListsWithCards = async (boardId: string) => {
   try {
@@ -26,11 +27,7 @@ export const getBoardListsWithCards = async (boardId: string) => {
   }
 };
 
-export const createList = async (
-  listTitle: string,
-  boardId: string,
-  pathName: string,
-) => {
+export const createList = async (listTitle: string, boardId: string) => {
   try {
     const currentDate = new Date().toISOString();
     const supabase = createClient();
@@ -43,7 +40,7 @@ export const createList = async (
       .limit(1)
       .single();
 
-    const { data, error: workspaceError } = await supabase
+    const { data: newList, error: newListError } = await supabase
       .from('lists')
       .insert({
         board_id: boardId,
@@ -55,14 +52,27 @@ export const createList = async (
       .select()
       .single();
 
-    return data;
-    if (workspaceError) throw workspaceError;
+    const { data: listData } = await supabase
+      .from('lists')
+      .select(`board:board_id (workspace_id)`)
+      .eq('id', newList.id)
+      .single();
+
+    await createAuditLog({
+      workspaceId: listData?.board?.workspace_id,
+      action: 'create',
+      entityId: newList.id,
+      entityType: 'list',
+      entityTitle: listTitle,
+    });
+
+    if (newListError) throw newListError;
+    return newList;
   } catch (error) {
     return error instanceof Error
       ? { error: error.message }
       : { error: 'Error from getWorkspaceBoards.' };
   }
-  revalidatePath(pathName);
 };
 
 export const duplicateList = async (

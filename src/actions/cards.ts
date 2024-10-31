@@ -3,6 +3,7 @@
 import { redirect } from 'next/navigation';
 
 import { createClient } from '@/utils/supabase/server';
+import { createAuditLog } from './audit-logs';
 
 export const getCards = async (listId: string) => {
   try {
@@ -22,11 +23,7 @@ export const getCards = async (listId: string) => {
   }
 };
 
-export const createCard = async (
-  cardTitle: string,
-  listId: string,
-  pathName: string,
-) => {
+export const createCard = async (cardTitle: string, listId: string) => {
   try {
     const currentDate = new Date().toISOString();
     const supabase = createClient();
@@ -36,26 +33,41 @@ export const createCard = async (
       .select('order')
       .eq('list_id', listId)
       .order('order', { ascending: false })
-      .limit(1)
       .single();
 
-    const { error: workspaceError } = await supabase.from('cards').insert({
-      list_id: listId,
-      title: cardTitle,
-      description: null,
-      order: biggestOrder ? biggestOrder.order + 1 : 1,
-      created_at: currentDate,
-      updated_at: currentDate,
-    });
+    const { data: newCard, error: newCardError } = await supabase
+      .from('cards')
+      .insert({
+        list_id: listId,
+        title: cardTitle,
+        description: null,
+        order: biggestOrder ? biggestOrder.order + 1 : 1,
+        created_at: currentDate,
+        updated_at: currentDate,
+      })
+      .select()
+      .single();
 
-    if (workspaceError) throw workspaceError;
+    if (newCardError) throw newCardError;
+
+    const { data: listData } = await supabase
+      .from('lists')
+      .select(`board:board_id (workspace_id)`)
+      .eq('id', listId)
+      .single();
+
+    await createAuditLog({
+      workspaceId: listData?.board?.workspace_id,
+      action: 'create',
+      entityId: newCard.id,
+      entityType: 'card',
+      entityTitle: cardTitle,
+    });
   } catch (error) {
     return error instanceof Error
       ? { error: error.message }
       : console.log(error);
   }
-
-  redirect(pathName);
 };
 
 export const deleteCard = async (cardId: string, pathName: string) => {

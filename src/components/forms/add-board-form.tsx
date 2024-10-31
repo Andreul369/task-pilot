@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useParams, usePathname, useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useQuery } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -27,83 +28,123 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Skeleton,
 } from '@/components/ui';
 import { defaultImages } from '@/constants/images';
+import { Tables } from '@/types/types_db';
 import { cn } from '@/utils/cn';
+import {
+  hasAvailableBoardSlots,
+  incrementWorkspaceBoardLimit,
+} from '@/utils/org-limit';
 import { unsplash } from '@/utils/unsplash/unsplash';
 
+interface UnsplashImage {
+  id: string;
+  urls: {
+    thumb: string;
+    regular: string;
+    full: string;
+  };
+  alt_description: string;
+}
+
+interface AddBoardFormProps {
+  workspaces: Tables<'workspaces'>[];
+  workspaceLimits: number;
+}
+
 const formSchema = z.object({
-  boardTitle: z.string().min(1).max(30),
-  workspaceId: z.string(),
-  boardBackground: z.string(),
+  boardTitle: z
+    .string()
+    .min(1, 'Title is required')
+    .max(30, 'Title is too long'),
+  workspaceId: z.string().min(1, 'Workspace is required'),
+  boardBackground: z.string().min(1, 'Background is required'),
 });
 
 export function AddBoardForm({
   workspaces,
-  userId,
-}: {
-  activeWorkspaceId: string;
-}) {
+  workspaceLimits,
+}: AddBoardFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [images, setImages] = useState<Array<Record<string, any>>>([]);
   const pathName = usePathname();
   const router = useRouter();
   const { workspaceId } = useParams<{ workspaceId: string }>();
 
-  useEffect(() => {
-    const fetchImages = async () => {
-      try {
-        const result = await unsplash.photos.getRandom({
-          collectionIds: ['317099'],
-          count: 8,
-        });
-        if (result && result.response) {
-          const responseImages = result.response as Array<Record<string, any>>;
-          setImages(responseImages);
-        } else {
-          setImages(defaultImages);
-          console.error('Failed to get images from Unsplash.');
-        }
-      } catch (error) {
-        console.error(error);
-        setImages(defaultImages);
-      } finally {
-        setIsLoading(false);
+  const {
+    data: images,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ['boardBackgroundImages'],
+    queryFn: async () => {
+      const result = await unsplash.photos.getRandom({
+        collectionIds: ['317099'],
+        count: 8,
+      });
+
+      if (!result?.response) {
+        throw new Error('Failed to fetch images');
       }
-    };
-    fetchImages();
-  }, []);
+
+      return result.response as UnsplashImage[];
+    },
+    staleTime: 0, // Prevents automatic refetching by keeping data "fresh"
+    refetchOnWindowFocus: false, // Disables refetching on window focus
+    refetchOnMount: true, // Ensures refetch on remount only
+  });
+
+  if (isError) {
+    console.error('Failed to fetch Unsplash images:', error);
+  }
+
+  const availableImages = images || defaultImages;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       boardTitle: '',
       workspaceId: workspaceId,
-      boardBackground: images[0]?.id,
+      boardBackground: '',
     },
   });
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    const { boardTitle, workspaceId, boardBackground } = data;
-    const imageData = images.find((image) => image.id === boardBackground);
-    const { id: imageId, urls } = imageData;
-    const imageThumb = urls.thumb;
-    const imageFull = urls.full;
+    try {
+      setIsSubmitting(true);
+      const { boardTitle, workspaceId, boardBackground } = data;
 
-    const boardId = await createBoard(
-      boardTitle,
-      workspaceId,
-      imageId,
-      imageThumb,
-      imageFull,
-      pathName,
-    );
+      const imageData = availableImages.find(
+        (image) => image.id === boardBackground,
+      );
 
-    if (boardId) {
+      if (!imageData) {
+        throw new Error('Selected image not found');
+      }
+
+      const boardId = await createBoard(
+        boardTitle,
+        workspaceId,
+        imageData.id,
+        imageData.urls.thumb,
+        imageData.urls.full,
+      );
+
+      if (!boardId) throw new Error('Failed to create board');
+
+      toast.success(`Board ${boardTitle} created successfully`);
       router.push(`/board/${boardId}`);
-    } else toast(`Error creating ${boardTitle}.`);
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : 'Failed to create board',
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -114,61 +155,66 @@ export function AddBoardForm({
           name="boardBackground"
           render={({ field }) => {
             // Set a default value to the first image if field.value is empty
-            if (!field.value && images.length > 0) {
-              field.onChange(images[0].id);
+            if (!field.value && availableImages.length > 0) {
+              field.onChange(availableImages[0].id);
             }
             return (
               <FormItem>
-                <FormLabel className="flex flex-col gap-6">
-                  <div className="relative h-32 w-56 self-center rounded-sm">
-                    <Image
-                      src={
-                        images.find((img) => img.id === field.value)?.urls
-                          .full || images[0]?.urls.full
-                      }
-                      alt="board-cover"
-                      fill
-                      className="rounded-sm	object-cover"
-                    />
-                    <Icons.BoardPlaceholder className="absolute left-[50%] top-0 -translate-x-1/2 transform" />
-                  </div>
-                  Background
-                </FormLabel>
-
-                <FormControl>
-                  <RadioGroup
-                    onValueChange={field.onChange}
-                    className="flex w-full flex-wrap items-center justify-between"
-                  >
-                    {images.map((image) => (
-                      <FormItem key={image.id}>
-                        <FormControl>
-                          <RadioGroupItem
-                            value={image.id}
-                            id={image.id}
-                            className="peer sr-only"
-                          />
-                        </FormControl>
-                        <FormLabel
-                          htmlFor={image.id}
-                          className={cn(
-                            'relative flex h-10 w-16 flex-col items-center justify-between rounded-md border-2 bg-popover p-4 hover:bg-accent hover:text-accent-foreground ',
-                            image.id === field.value && 'border-primary',
-                          )}
-                        >
-                          <Image
-                            src={image.urls.full}
-                            fill
-                            alt={image.alt_description}
-                            className="rounded-sm	object-cover"
-                          />
-                        </FormLabel>
-                      </FormItem>
-                    ))}
-                  </RadioGroup>
-                </FormControl>
-
-                <FormMessage />
+                {isLoading ? (
+                  <BoardFormSkeleton />
+                ) : (
+                  <>
+                    <FormLabel className="flex flex-col gap-6">
+                      <div className="relative h-32 w-56 self-center rounded-sm">
+                        <Image
+                          src={
+                            availableImages.find(
+                              (img) => img.id === field.value,
+                            )?.urls.regular || availableImages[0]?.urls.regular
+                          }
+                          alt="board-cover"
+                          fill
+                          className="rounded-sm object-cover"
+                        />
+                        <Icons.BoardPlaceholder className="absolute left-[50%] top-0 -translate-x-1/2 transform" />
+                      </div>
+                      Background
+                    </FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        className="flex w-full flex-wrap items-center justify-between"
+                      >
+                        {availableImages.map((image) => (
+                          <FormItem key={image.id}>
+                            <FormControl>
+                              <RadioGroupItem
+                                value={image.id}
+                                id={image.id}
+                                className="peer sr-only"
+                              />
+                            </FormControl>
+                            <FormLabel
+                              htmlFor={image.id}
+                              className={cn(
+                                'relative flex h-10 w-16 flex-col items-center justify-between rounded-md border-2 bg-popover p-4 hover:bg-accent hover:text-accent-foreground ',
+                                image.id === field.value && 'border-primary',
+                              )}
+                            >
+                              <Image
+                                src={image.urls.thumb}
+                                fill
+                                alt={image.alt_description}
+                                className="rounded-sm object-cover"
+                              />
+                            </FormLabel>
+                          </FormItem>
+                        ))}
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </>
+                )}
               </FormItem>
             );
           }}
@@ -212,22 +258,43 @@ export function AddBoardForm({
                 </SelectContent>
               </Select>
               <FormDescription>
-                This Workspace has 6 boards remaining. Free Workspaces can only
-                have 10 open boards. For unlimited boards, upgrade your
-                Workspace.
+                This Workspace has {workspaceLimits} boards remaining. Free
+                Workspaces can only have 10 open boards. For unlimited boards,
+                upgrade your Workspace.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <Button type="submit" disabled={isSubmitting} className="w-full">
-          {isSubmitting && (
-            <Icons.Spinner className="mr-2 size-4 animate-spin" />
+        <Button
+          type="submit"
+          disabled={isSubmitting || isLoading}
+          className="w-full"
+        >
+          {isSubmitting ? (
+            <>
+              <Icons.Spinner className="mr-2 size-4 animate-spin" />
+              Creating...
+            </>
+          ) : (
+            'Create Board'
           )}
-          Create
         </Button>
       </form>
     </Form>
+  );
+}
+
+function BoardFormSkeleton() {
+  return (
+    <div className="flex flex-col gap-6">
+      <Skeleton className="relative h-32 w-56 self-center" />
+      <div className="flex w-full flex-wrap items-center justify-between gap-2">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <Skeleton key={i} className="h-10 w-16" />
+        ))}
+      </div>
+    </div>
   );
 }

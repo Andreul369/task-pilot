@@ -2,7 +2,13 @@
 
 import { redirect } from 'next/navigation';
 
+import {
+  decreaseWorkspaceBoardLimit,
+  hasAvailableBoardSlots,
+  incrementWorkspaceBoardLimit,
+} from '@/utils/org-limit';
 import { createClient } from '@/utils/supabase/server';
+import { createAuditLog } from './audit-logs';
 
 export const getWorkspaceBoards = async (workspaceId: string) => {
   try {
@@ -28,12 +34,19 @@ export const createBoard = async (
   imageId: string,
   imageThumb: string,
   imageFull: string,
-  pathName: string,
 ) => {
-  // Step 1: Create the new board
   try {
     const supabase = createClient();
-    const { data, error } = await supabase
+    // check if the workspace has available board slots
+    const canCreate = await hasAvailableBoardSlots(workspaceId);
+
+    if (!canCreate) {
+      throw new Error(
+        'You have reached your limit of free boards. Please upgrade to create more.',
+      );
+    }
+
+    const { data: newBoard, error: newBoardError } = await supabase
       .from('boards')
       .insert({
         title: boardTitle,
@@ -42,35 +55,24 @@ export const createBoard = async (
         image_thumb_url: imageThumb,
         image_full_url: imageFull,
       })
-      .select('id') // specify the column you want returned
+      .select()
       .single();
 
     // If there was an error inserting the row, throw the error.
-    if (error) throw error;
+    if (newBoardError) throw newBoardError;
 
-    // Step 2 (Async): Fetch members and send notifications
-    (async () => {
-      const { data: members } = await supabase
-        .from('workspace_members')
-        .select('member_id')
-        .eq('workspace_id', workspaceId)
-        .neq('member_id', creatorId); // Exclude the creator
+    await incrementWorkspaceBoardLimit(workspaceId);
 
-      const memberIds = members.map((member) => member.member_id);
-
-      // Trigger notifications asynchronously
-      await Promise.all(
-        memberIds.map((memberId) =>
-          novu.trigger('new-board-notification', {
-            to: { subscriberId: memberId },
-            payload: { boardName, boardId: board.id, workspaceId },
-          }),
-        ),
-      );
-    })();
+    await createAuditLog({
+      workspaceId: workspaceId,
+      action: 'create',
+      entityId: newBoard.id,
+      entityType: 'board',
+      entityTitle: boardTitle,
+    });
 
     // If not, the id of the inserted row.
-    return data.id;
+    return newBoard;
   } catch (error) {
     // If there was an error, return it in a standard format.
     return error instanceof Error
@@ -102,20 +104,40 @@ export const updateBoardTitle = async (
   redirect(pathName);
 };
 
-export const deleteBoard = async (boardId: string, pathName: string) => {
+export const deleteBoard = async (
+  boardId: string,
+  workspaceId: string,
+  boardTitle: string,
+  // pathName: string,
+) => {
+  const supabase = createClient();
+
   try {
-    const supabase = createClient();
-    const { error: workspaceError } = await supabase
+    // Start a transaction by using .from() multiple times
+    const { error: boardError } = await supabase
       .from('boards')
       .delete()
       .eq('id', boardId);
 
-    if (workspaceError) throw workspaceError;
+    if (boardError) throw boardError;
+
+    // Decrease the workspace board limit
+    await decreaseWorkspaceBoardLimit(workspaceId);
+
+    // Create audit log for the deletion
+    await createAuditLog({
+      workspaceId: workspaceId,
+      action: 'delete',
+      entityId: boardId,
+      entityType: 'board',
+      entityTitle: boardTitle,
+    });
+
+    // redirect(pathName);
   } catch (error) {
+    console.error('Error deleting board:', error);
     return error instanceof Error
       ? { error: error.message }
-      : { error: 'Error from deleteBoard.' };
+      : { error: 'Error deleting board' };
   }
-
-  redirect(pathName);
 };

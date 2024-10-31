@@ -1,3 +1,4 @@
+// import { deleteBoard } from '@/actions/boards';
 import { UpdateBoardTitleForm } from '@/components/forms/board-title-form';
 import * as Icons from '@/components/icons/icons';
 import {
@@ -9,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui';
 import { createClient } from '@/utils/supabase/server';
-import { BoardClient } from '../client/board.client';
+import { BoardClient } from './board.client';
 
 export async function BoardServer({ boardId }: { boardId: string }) {
   const supabase = createClient();
@@ -20,9 +21,9 @@ export async function BoardServer({ boardId }: { boardId: string }) {
     .eq('id', boardId)
     .single();
 
-  const { data: lists, error: listsError } = await supabase
+  const { data: listsData, error: listsError } = await supabase
     .from('lists')
-    .select('*, cards:cards(*)')
+    .select('*, cards:cards(id, list_id, title, order)')
     .eq('board_id', boardId)
     .order('order', { ascending: true });
 
@@ -68,11 +69,22 @@ export async function BoardServer({ boardId }: { boardId: string }) {
             <DropdownMenuItem>Favorite</DropdownMenuItem>
             <DropdownMenuSeparator />
 
-            <DropdownMenuItem>Delete</DropdownMenuItem>
+            {/* <DropdownMenuItem
+              onClick={async () => {
+                await deleteBoard(
+                  boardData.id,
+                  boardData.workspace_id,
+                  boardData.title,
+                  // pathName,
+                );
+              }}
+            >
+              Delete
+            </DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <BoardClient initialData={lists} />
+      <BoardClient initialData={listsData} />
     </>
   );
 }

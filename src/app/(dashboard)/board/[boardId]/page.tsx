@@ -2,7 +2,7 @@ import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 
 import { Board } from '@/components/board/board';
-import { BoardServer } from '@/components/board/experiment/server/board.server';
+import { BoardServer } from '@/components/board/board.server';
 import { createClient } from '@/utils/supabase/server';
 
 export default async function DashboardPage({

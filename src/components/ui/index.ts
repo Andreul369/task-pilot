@@ -144,6 +144,8 @@ export {
   SheetDescription,
 } from './sheet';
 
+export { Skeleton } from './skeleton';
+
 export { Switch } from './switch';
 
 export { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs';

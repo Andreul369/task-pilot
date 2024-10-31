@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import { createAuditLog } from '@/actions/audit-logs';
 import { createCard } from '@/actions/cards';
 import * as Icons from '@/components/icons/icons';
 import {
@@ -72,7 +73,6 @@ export function AddCardForm({ listId }: { listId: string }) {
     resolver: zodResolver(formSchema),
     defaultValues: {},
   });
-
   async function onSubmit(data: z.infer<typeof formSchema>) {
     const { cardTitle } = data;
     await createCard(cardTitle, listId, pathName);

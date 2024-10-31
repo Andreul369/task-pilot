@@ -6,6 +6,8 @@ import './globals.css';
 import { TailwindIndicator } from '@/components/tailwind-indicator';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui';
+import { ModalProvider } from '@/providers/modal-provider';
+import Providers from '@/providers/providers';
 import { siteConfig } from './config';
 
 export const metadata = {
@@ -47,8 +49,11 @@ export default function RootLayout({
     <html lang="en" className={GeistSans.className}>
       <body className="min-h-screen antialiased">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          {children}
-          <TailwindIndicator />
+          <Providers>
+            {children}
+            <TailwindIndicator />
+            <ModalProvider />
+          </Providers>
         </ThemeProvider>
         {/* <Analytics /> */}
         <Toaster />
