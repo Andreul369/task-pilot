@@ -78,7 +78,9 @@ export default async function WorkspacePage() {
                         Create new board
                       </CardTitle>
                       <CardDescription>
-                        {MAX_FREE_BOARDS - workspace.workspace_limits?.count}{' '}
+                        {console.log(workspace.workspace_limits?.count)}
+                        {MAX_FREE_BOARDS -
+                          workspace.workspace_limits?.count}{' '}
                         remaining
                       </CardDescription>
                     </CardHeader>
