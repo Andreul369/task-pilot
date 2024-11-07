@@ -10,7 +10,7 @@ const ThemeToggle = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >((props, ref) => {
-  const { setTheme, theme } = useTheme();
+  const { setTheme, resolvedTheme } = useTheme();
 
   const themeContent = {
     light: {
@@ -21,7 +21,7 @@ const ThemeToggle = React.forwardRef<
       icon: <Icons.MoonShad className="size-4" />,
       text: 'Dark Mode',
     },
-  }[theme as 'light' | 'dark'];
+  }[resolvedTheme as 'light' | 'dark'];
 
   return (
     <div
@@ -36,8 +36,8 @@ const ThemeToggle = React.forwardRef<
       </p>
       <Switch
         id="theme-toggle"
-        checked={theme === 'dark'}
-        onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+        checked={resolvedTheme === 'dark'}
+        onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
       />
     </div>
   );
