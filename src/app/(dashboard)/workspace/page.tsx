@@ -72,15 +72,13 @@ export default async function WorkspacePage() {
 
               <Popover>
                 <PopoverTrigger asChild>
-                  <Card className="relative h-24 w-full cursor-pointer bg-muted/40 md:w-52">
+                  <Card className="relative h-28 w-full cursor-pointer bg-muted/40 md:w-56">
                     <CardHeader className="p-3">
                       <CardTitle className="text-lg">
                         Create new board
                       </CardTitle>
                       <CardDescription>
-                        {console.log(workspace.workspace_limits?.count)}
-                        {MAX_FREE_BOARDS -
-                          workspace.workspace_limits?.count}{' '}
+                        {MAX_FREE_BOARDS - workspace.workspace_limits?.count}{' '}
                         remaining
                       </CardDescription>
                     </CardHeader>
@@ -89,7 +87,7 @@ export default async function WorkspacePage() {
                         <TooltipTrigger asChild>
                           <Icons.Help className="absolute bottom-2 right-2 size-4 text-muted-foreground" />
                         </TooltipTrigger>
-                        <TooltipContent side="bottom" className="max-w-52">
+                        <TooltipContent side="bottom" className="max-w-56">
                           <p>Free Workspaces can have up to 5 open boards.</p>
                           <p>For unlimited boards upgrade this worskpace.</p>
                         </TooltipContent>
@@ -118,12 +116,12 @@ export default async function WorkspacePage() {
       <div className="flex flex-col gap-1 p-4 lg:gap-6 lg:p-6">
         <h3 className="text-2xl font-bold tracking-tight">Guest workspaces</h3>
         <div className="row-wrap flex gap-4">
-          <Card className="h-24 w-52 bg-muted/40">
+          <Card className="h-28 w-56 bg-muted/40">
             <CardHeader className="p-3">
               <CardTitle className="text-lg">Dev Department #3</CardTitle>
             </CardHeader>
           </Card>
-          <Card className="h-24 w-52 bg-muted/40">
+          <Card className="h-28 w-56 bg-muted/40">
             <CardHeader className="p-3">
               <CardTitle className="text-lg">Sales Department #4</CardTitle>
             </CardHeader>

@@ -5,7 +5,6 @@ import * as Icons from '@/components/icons/icons';
 import { NotificationCenter } from '@/components/nav/notification-center';
 import SidebarWorkspaceMobile from '@/components/nav/sidebar-workspace-mobile';
 import { UserNav } from '@/components/nav/user-nav';
-import { Input } from '@/components/ui';
 import { WorkspaceSwitcher } from '@/components/workspace-switcher';
 import { createClient } from '@/utils/supabase/server';
 import { siteConfig } from '../config';
@@ -33,14 +32,7 @@ export default async function DashboardLayout({
         </Link>
         <SidebarWorkspaceMobile workspaces={workspaces || []} />
 
-        <div className="hidden bg-background/50 backdrop-blur supports-[backdrop-filter]:bg-background/60 md:block">
-          {/* <form>
-            <div className="relative">
-              <Icons.Search className="absolute left-2 top-2.5 size-5 text-muted-foreground" />
-              <Input placeholder="Search" className="pl-8" />
-            </div>
-          </form> */}
-        </div>
+        <div className="hidden bg-background/50 backdrop-blur supports-[backdrop-filter]:bg-background/60 md:block"></div>
         <div className="flex items-center gap-4">
           {user && <WorkspaceSwitcher workspaces={workspaces} />}
 

@@ -51,7 +51,7 @@ const DialogContent = React.forwardRef<
             variant="ghost"
             className="absolute right-3 top-3"
           >
-            <X className="h-5 w-5" />
+            <X className="size-5" />
             <span className="sr-only">Close</span>
           </Button>
         </DialogPrimitive.Close>

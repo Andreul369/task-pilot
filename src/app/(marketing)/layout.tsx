@@ -1,7 +1,6 @@
 import { Suspense } from 'react';
 import Link from 'next/link';
 
-// import { siteConfig } from '~/app/config';
 // import { MobileDropdown } from '~/components/mobile-nav';
 
 import * as Icons from '@/components/icons/icons';
