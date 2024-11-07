@@ -27,7 +27,7 @@ export default async function WorkspacePage() {
   const { data: workspaces, error } = await supabase
     .from('workspaces')
     .select(`*, boards (*), workspace_limits (count)`)
-    .eq('owner_id', user.id);
+    .eq('owner_id', user?.id);
 
   if (error) {
     console.error('Error fetching workspaces:', error);
