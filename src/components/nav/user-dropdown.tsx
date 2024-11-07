@@ -41,9 +41,9 @@ const UserDropdown = ({
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="relative h-8 w-8 rounded-full">
             <Avatar className="h-8 w-8">
-              {/* <AvatarImage src={avatarUrl} alt={fullName ?? ''} /> */}
+              <AvatarImage src={avatarUrl} alt={fullName ?? ''} />
               <AvatarFallback>
-                {/* {fullName && getInitials(fullName)} */}AA
+                {fullName && getInitials(fullName)}AA
               </AvatarFallback>
             </Avatar>
           </Button>
@@ -51,9 +51,9 @@ const UserDropdown = ({
         <DropdownMenuContent className="w-56" align="end" forceMount>
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
-              {/* <p className="text-sm font-medium leading-none">{fullName}</p> */}
+              <p className="text-sm font-medium leading-none">{fullName}</p>
               <p className="text-xs leading-none text-muted-foreground">
-                {/* {email} */}
+                {email}
               </p>
             </div>
           </DropdownMenuLabel>
@@ -85,11 +85,13 @@ const UserDropdown = ({
           </DropdownMenuGroup>
           <DropdownMenuItem asChild>{/* <ThemeToggle /> */}</DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem asChild>{/* <SignOut /> */}</DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <SignOut />
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
       <DialogContent className="flex max-w-6xl">
-        {/* <CreateWorkspaceDialog userId={id} /> */}
+        <CreateWorkspaceDialog userId={id} />
       </DialogContent>
     </Dialog>
   );
