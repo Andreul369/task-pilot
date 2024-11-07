@@ -83,9 +83,7 @@ const UserDropdown = ({
               </DialogTrigger>
             </DropdownMenuItem>
           </DropdownMenuGroup>
-          <DropdownMenuItem asChild>
-            <ThemeToggle />
-          </DropdownMenuItem>
+          <DropdownMenuItem asChild>{/* <ThemeToggle /> */}</DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>{/* <SignOut /> */}</DropdownMenuItem>
         </DropdownMenuContent>
