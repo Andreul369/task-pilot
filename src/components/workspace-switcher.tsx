@@ -3,8 +3,9 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
-import { Castle, Check, ChevronsUpDown } from 'lucide-react';
+import { ChevronsUpDown } from 'lucide-react';
 
+import * as Icons from '@/components/icons/icons';
 import {
   Button,
   Command,
@@ -39,7 +40,7 @@ export function WorkspaceSwitcher({ workspaces }: WorkspaceSwitcherProps) {
         >
           {activeWorkspace ? (
             <div className="flex items-center">
-              <Castle className="mr-2 size-4" />
+              <Icons.Castle className="mr-2 size-4" />
               {activeWorkspace.name}
             </div>
           ) : (
@@ -64,9 +65,9 @@ export function WorkspaceSwitcher({ workspaces }: WorkspaceSwitcherProps) {
                     }}
                   >
                     {activeWorkspace?.id === workspace.id ? (
-                      <Check className="mr-2 size-4" />
+                      <Icons.Check className="mr-2 size-4" />
                     ) : (
-                      <Castle className="mr-2 size-4" />
+                      <Icons.Castle className="mr-2 size-4" />
                     )}
 
                     {workspace.name}

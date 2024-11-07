@@ -41,7 +41,7 @@ const UserDropdown = ({
             <Avatar className="h-8 w-8">
               <AvatarImage src={avatarUrl} alt={fullName ?? ''} />
               <AvatarFallback>
-                {fullName && getInitials(fullName)}
+                {/* {fullName && getInitials(fullName)} */}
               </AvatarFallback>
             </Avatar>
           </Button>
@@ -91,7 +91,7 @@ const UserDropdown = ({
         </DropdownMenuContent>
       </DropdownMenu>
       <DialogContent className="flex max-w-6xl">
-        <CreateWorkspaceDialog userId={id} />
+        {/* <CreateWorkspaceDialog userId={id} /> */}
       </DialogContent>
     </Dialog>
   );
