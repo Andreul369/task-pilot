@@ -51,6 +51,7 @@ export const Italic = Lucide.Italic;
 export const Key = Lucide.Key;
 export const ListFilter = Lucide.ListFilter;
 export const LineChart = Lucide.LineChart;
+export const LogIn = Lucide.LogIn;
 export const Logo = Lucide.Command;
 export const LogOut = Lucide.LogOut;
 export const Minus = Lucide.Minus;

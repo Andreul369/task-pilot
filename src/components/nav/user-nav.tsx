@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { LogIn } from 'lucide-react';
 
+import * as Icons from '@/components/icons/icons';
 import { Avatar, AvatarFallback, Button } from '@/components/ui';
 import UserDropdown from './user-dropdown';
 
@@ -11,7 +11,7 @@ export async function UserNav({ user }) {
         <Button variant="ghost" className="relative h-8 w-8 rounded">
           <Avatar className="h-8 w-8">
             <AvatarFallback className="bg-transparent">
-              <LogIn className="h-6 w-6" />
+              <Icons.LogIn className="size-6" />
             </AvatarFallback>
           </Avatar>
         </Button>

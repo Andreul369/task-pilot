@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { Castle, User } from 'lucide-react';
 
 import * as Icons from '@/components/icons/icons';
 import {
@@ -60,13 +59,13 @@ const UserDropdown = ({
           <DropdownMenuGroup>
             <DropdownMenuItem asChild>
               <Link href={`/${id}/settings`}>
-                <User className="mr-2 size-4" />
+                <Icons.User className="mr-2 size-4" />
                 <span>Profile</span>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link href={`/workspace`}>
-                <Castle className="mr-2 size-4" />
+                <Icons.Castle className="mr-2 size-4" />
                 <span>Workspaces</span>
               </Link>
             </DropdownMenuItem>
