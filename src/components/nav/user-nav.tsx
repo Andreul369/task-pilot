@@ -2,16 +2,9 @@ import Link from 'next/link';
 import { LogIn } from 'lucide-react';
 
 import { Avatar, AvatarFallback, Button } from '@/components/ui';
-import { createClient } from '@/utils/supabase/server';
 import UserDropdown from './user-dropdown';
 
-export async function UserNav() {
-  const supabase = createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
+export async function UserNav({ user }) {
   if (!user) {
     return (
       <Link href="/signin">
@@ -29,7 +22,7 @@ export async function UserNav() {
   return (
     <UserDropdown
       id={user.id}
-      email={user.email!}
+      email={user.email}
       avatarUrl={user.user_metadata.avatar_url}
       fullName={user.user_metadata.full_name}
     />

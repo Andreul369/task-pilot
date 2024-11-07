@@ -37,7 +37,7 @@ export default async function DashboardLayout({
           {user && <WorkspaceSwitcher workspaces={workspaces} />}
 
           <NotificationCenter />
-          <UserNav />
+          <UserNav user={user} />
         </div>
       </nav>
 

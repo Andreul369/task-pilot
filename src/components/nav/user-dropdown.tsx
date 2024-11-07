@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Castle, CreditCard, Settings, User } from 'lucide-react';
+import { Castle, User } from 'lucide-react';
 
 import * as Icons from '@/components/icons/icons';
 import {
@@ -16,10 +16,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
-  Label,
-  Switch,
 } from '@/components/ui';
 import { getInitials } from '@/utils/helpers';
 import SignOut from '../forms/AuthForms/sign-out';
