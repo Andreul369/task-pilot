@@ -10,7 +10,7 @@ export default async function WorkspaceLayout({
 }>) {
   const supabase = createClient();
   const user = await getUser(supabase);
-  const workspaces = await getUserWorkspaces(user.id);
+  const workspaces = await getUserWorkspaces(user?.id);
 
   return (
     <div className="relative flex">
