@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
 import { AddBoardForm } from '@/components/forms/add-board-form';
 import * as Icons from '@/components/icons/icons';
@@ -23,6 +24,10 @@ import { createClient } from '@/utils/supabase/server';
 export default async function WorkspacePage() {
   const supabase = createClient();
   const user = await getUser(supabase);
+
+  if (!user) {
+    redirect('/signin');
+  }
 
   const { data: workspaces, error } = await supabase
     .from('workspaces')
