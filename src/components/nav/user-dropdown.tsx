@@ -41,7 +41,7 @@ const UserDropdown = ({
             <Avatar className="h-8 w-8">
               <AvatarImage src={avatarUrl} alt={fullName ?? ''} />
               <AvatarFallback>
-                {fullName && getInitials(fullName)}AA
+                {fullName && getInitials(fullName)}
               </AvatarFallback>
             </Avatar>
           </Button>

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 
 import { updateCardsOrder } from '@/actions/cards';
@@ -24,6 +24,10 @@ function reorder<T>(list: T[], startIndex: number, endIndex: number) {
 export function BoardClient({ initialData }: ListsClientProps) {
   const supabase = createClient();
   const [orderedLists, setOrderedLists] = useState(initialData);
+  // isLocalUpdate flag to skip realtime updates when we know they're
+  // coming from our own local changes, while still processing updates from other users.
+  const isLocalUpdate = useRef(false);
+
   useEffect(() => {
     const channel = supabase
       .channel('realtime_lists')
@@ -35,11 +39,20 @@ export function BoardClient({ initialData }: ListsClientProps) {
           table: 'lists',
         },
         (payload) => {
+          if (isLocalUpdate.current) return;
           switch (payload.eventType) {
             case 'INSERT':
               {
-                console.log('Received payload INSERT:', payload);
-                setOrderedLists((prevLists) => [...prevLists, payload.new]);
+                setOrderedLists((prevLists) => [
+                  ...prevLists,
+                  {
+                    id: payload.new.id,
+                    title: payload.new.title,
+                    order: payload.new.order,
+                    list_id: payload.new.list_id,
+                    cards: [],
+                  },
+                ]);
               }
               break;
             case 'UPDATE':
@@ -85,6 +98,7 @@ export function BoardClient({ initialData }: ListsClientProps) {
           table: 'cards',
         },
         (payload) => {
+          if (isLocalUpdate.current) return;
           switch (payload.eventType) {
             case 'INSERT':
               {
@@ -167,16 +181,16 @@ export function BoardClient({ initialData }: ListsClientProps) {
     async (result: any) => {
       const { destination, source, type } = result;
 
-      if (!destination) {
-        return;
-      }
-
       if (
-        destination.droppableId === source.droppableId &&
-        destination.index === source.index
+        !destination ||
+        (destination.droppableId === source.droppableId &&
+          destination.index === source.index)
       ) {
         return;
       }
+
+      // Set local update flag
+      isLocalUpdate.current = true;
 
       // on list order change
       if (type === 'list') {
@@ -185,7 +199,8 @@ export function BoardClient({ initialData }: ListsClientProps) {
           source.index,
           destination.index,
         ).map((item, index) => ({ ...item, order: index }));
-
+        // Update local state immediately
+        setOrderedLists(newOrderedLists);
         const listsToUpdate = newOrderedLists.map(
           ({ id, board_id, order }) => ({
             id,
