@@ -113,34 +113,37 @@ export function BoardClient({ initialData }: BoardClientProps) {
             case 'UPDATE':
               {
                 setOrderedLists((prevLists) => {
+                  // Batch all updates by list
                   return prevLists.map((list) => {
-                    // When moving the card to the new list
-                    if (list.id === payload.new.list_id) {
+                    // If this is either the source or destination list
+                    if (
+                      list.id === payload.new.list_id ||
+                      list.id === payload.old.list_id
+                    ) {
+                      // Remove card if it's moving from this list
+                      const filteredCards = list.cards.filter(
+                        (card) => card.id !== payload.new.id,
+                      );
+
+                      // Add card if this is the destination list
+                      if (list.id === payload.new.list_id) {
+                        filteredCards.push({
+                          ...payload.new,
+                          list_id: payload.new.list_id,
+                          order: payload.new.order,
+                        });
+                      }
+
+                      // Sort cards by order
+                      const sortedCards = filteredCards.sort(
+                        (a, b) => a.order - b.order,
+                      );
+
                       return {
                         ...list,
-                        cards: [
-                          ...list.cards.filter(
-                            (card) => card.id !== payload.old.id,
-                          ), // Ensure the card from the old list is removed
-                          {
-                            ...payload.new,
-                            // Add the moved card with its new details
-                          },
-                        ],
+                        cards: sortedCards,
                       };
                     }
-
-                    // When removing the card from the old list
-                    if (list.id === payload.old.list_id) {
-                      return {
-                        ...list,
-                        cards: list.cards.filter(
-                          (card) => card.id !== payload.old.id,
-                        ),
-                      };
-                    }
-
-                    // Return unchanged lists
                     return list;
                   });
                 });
