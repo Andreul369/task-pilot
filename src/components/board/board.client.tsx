@@ -10,7 +10,7 @@ import { Tables } from '@/types/types_db';
 import { createClient } from '@/utils/supabase/client';
 import { ListClient } from './list.client';
 
-interface ListsClientProps extends Tables<'lists'> {
+interface BoardClientProps extends Tables<'lists'> {
   initialData: Pick<Tables<'cards'>, 'id' | 'list_id' | 'title' | 'order'>[];
 }
 
@@ -21,12 +21,9 @@ function reorder<T>(list: T[], startIndex: number, endIndex: number) {
   return result;
 }
 
-export function BoardClient({ initialData }: ListsClientProps) {
+export function BoardClient({ initialData }: BoardClientProps) {
   const supabase = createClient();
   const [orderedLists, setOrderedLists] = useState(initialData);
-  // isLocalUpdate flag to skip realtime updates when we know they're
-  // coming from our own local changes, while still processing updates from other users.
-  const isLocalUpdate = useRef(false);
 
   useEffect(() => {
     const channel = supabase
@@ -39,7 +36,6 @@ export function BoardClient({ initialData }: ListsClientProps) {
           table: 'lists',
         },
         (payload) => {
-          if (isLocalUpdate.current) return;
           switch (payload.eventType) {
             case 'INSERT':
               {
@@ -98,7 +94,6 @@ export function BoardClient({ initialData }: ListsClientProps) {
           table: 'cards',
         },
         (payload) => {
-          if (isLocalUpdate.current) return;
           switch (payload.eventType) {
             case 'INSERT':
               {
@@ -188,9 +183,6 @@ export function BoardClient({ initialData }: ListsClientProps) {
       ) {
         return;
       }
-
-      // Set local update flag
-      isLocalUpdate.current = true;
 
       // on list order change
       if (type === 'list') {
