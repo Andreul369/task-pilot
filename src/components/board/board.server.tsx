@@ -38,7 +38,7 @@ export async function BoardServer({ boardId }: { boardId: string }) {
   }
 
   return (
-    <>
+    <div className="flex h-full w-full flex-col">
       <div className="flex w-full items-center justify-between bg-black/25 px-4 py-2 backdrop-blur-sm">
         <div className="flex w-full items-center justify-start gap-4">
           <UpdateBoardTitleForm
@@ -70,21 +70,22 @@ export async function BoardServer({ boardId }: { boardId: string }) {
             <DropdownMenuSeparator />
 
             {/* <DropdownMenuItem
-              onClick={async () => {
-                await deleteBoard(
-                  boardData.id,
-                  boardData.workspace_id,
-                  boardData.title,
-                  // pathName,
-                );
-              }}
-            >
-              Delete
-            </DropdownMenuItem> */}
+             onClick={async () => {
+               await deleteBoard(
+                 boardData.id,
+                 boardData.workspace_id,
+                 boardData.title,
+                 // pathName,
+               );
+             }}
+           >
+             Delete
+           </DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+
       <BoardClient initialData={listsData} />
-    </>
+    </div>
   );
 }

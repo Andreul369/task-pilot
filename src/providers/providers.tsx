@@ -19,7 +19,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <QueryClientProvider client={queryClient}>
         {children}
-        <ModalProvider />
+        {/* <ModalProvider /> */}
       </QueryClientProvider>
     </ThemeProvider>
   );

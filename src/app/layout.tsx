@@ -44,8 +44,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={GeistSans.className}>
-      <body className="min-h-screen antialiased">
+    <html lang="en">
+      <body className={`min-h-screen antialiased ${GeistSans.className}`}>
         <Providers>
           {children}
           <TailwindIndicator />

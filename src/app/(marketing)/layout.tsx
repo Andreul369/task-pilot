@@ -1,11 +1,9 @@
 import { Suspense } from 'react';
-import Link from 'next/link';
 
 // import { MobileDropdown } from '~/components/mobile-nav';
 
 import * as Icons from '@/components/icons/icons';
 import { UserNav } from '@/components/nav/user-nav';
-import { buttonVariants, Input } from '@/components/ui';
 import { getUser } from '@/utils/supabase/queries';
 // import { MainNav } from '../(dashboard)/_components/main-nav';
 import { createClient } from '@/utils/supabase/server';
@@ -46,13 +44,5 @@ async function DashboardLink() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) {
-    return (
-      <Link href="/signin" className={buttonVariants({ variant: 'outline' })}>
-        Sign In
-        <Icons.ChevronRight className="ml-1 h-4 w-4" />
-      </Link>
-    );
-  }
-  return <UserNav />;
+  return <UserNav user={user} />;
 }

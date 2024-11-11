@@ -45,7 +45,7 @@ export function ListClient({ initialData, index }: ListClientProps) {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className="self-start"
+          // className="self-start"
         >
           <Card className="w-72 self-start bg-card/90">
             <CardHeader className="flex-row items-center justify-between p-2">

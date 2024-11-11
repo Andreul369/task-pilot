@@ -16,7 +16,7 @@ export default async function BoardLayout({
 
   return (
     <div
-      className="relative flex min-h-[calc(100vh-56px)] flex-col bg-cover bg-center bg-no-repeat"
+      className="relative h-[calc(100vh-3.5rem)] overflow-hidden bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: `url(${boardData?.image_full_url})` }}
     >
       {children}

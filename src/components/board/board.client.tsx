@@ -247,23 +247,65 @@ export function BoardClient({ initialData }: BoardClientProps) {
     [orderedLists],
   );
 
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="lists" type="list" direction="horizontal">
-        {(provided) => (
-          <div
-            ref={provided.innerRef}
-            {...provided.droppableProps}
-            className="add-list-form-container flex flex-1 gap-3 p-4"
-          >
-            {orderedLists.map((list, index) => (
-              <ListClient key={list.id} initialData={list} index={index} />
-            ))}
-            {provided.placeholder}
-            <AddListForm />
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
+    <div
+      ref={scrollContainerRef}
+      id="board-scroll-container"
+      className="flex-1 overflow-x-auto overflow-y-hidden"
+      onMouseDown={(e) => {
+        // Prevent default behavior to avoid text selection
+        e.preventDefault();
+
+        // Only handle drag if clicking directly on this container
+        if (e.target === e.currentTarget) {
+          const element = scrollContainerRef.current;
+          if (!element) return;
+
+          let startX = e.clientX;
+          let scrollLeft = element.scrollLeft;
+
+          const handleMouseMove = (e: MouseEvent) => {
+            e.preventDefault();
+            if (!element) return;
+
+            const dx = e.clientX - startX;
+            element.scrollLeft = scrollLeft - dx;
+          };
+
+          const handleMouseUp = () => {
+            document.removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('mouseup', handleMouseUp);
+            if (element) element.style.cursor = 'grab';
+          };
+
+          element.style.cursor = 'grabbing';
+          document.addEventListener('mousemove', handleMouseMove);
+          document.addEventListener('mouseup', handleMouseUp);
+        }
+      }}
+      style={{ cursor: 'grab' }}
+    >
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="lists" type="list" direction="horizontal">
+          {(provided) => (
+            <div
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+              className="add-list-form-container flex gap-3 p-4"
+            >
+              {orderedLists.map((list, index) => (
+                <ListClient key={list.id} initialData={list} index={index} />
+              ))}
+              {provided.placeholder}
+              <AddListForm />
+              {/* 👇` marks the end of the container. */}
+              <div className="w-1 flex-shrink-0" />
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+    </div>
   );
 }
